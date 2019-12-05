@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="Amazon_Test">
+    <test name="Amazon_Product_Purchase">
+        <classes>
+            <class name="setup.AmazonSetup" />
+            <class name="Purchase_Amazon_Product" />
+        </classes>
+    </test>
+</suite>
