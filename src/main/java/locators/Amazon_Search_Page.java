@@ -33,6 +33,12 @@ public class Amazon_Search_Page extends Base {
     }
 
 
+    public void searchForProduct(String search_text){
+        clickOnSearchTextBox();
+        enterTextInSearchTextBox(search_text);
+        selectFromSearchOption(search_text);
+    }
+
 
 
 

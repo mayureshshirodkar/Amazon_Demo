@@ -12,31 +12,23 @@ public class Purchase_Product_Scenario {
     @Test(priority=1)
     public void AmazonLogin(){
         login.clickOnAlreadyCustomer();
-        login.enterLoginEmailAddress("7020214690");
-        login.clickOnContinueButton();
-        login.enterLoginPaasword("test123");
+        login.enterUserName("7020214690");
+        login.enterLoginPassword("test123");
         login.clickOnSignInButton();
     }
 
     @Test(priority=2)
     public void AmazonSearchItem() {
         home.acceptLanguagePopup();
-        search.clickOnSearchTextBox();
-        search.enterTextInSearchTextBox("65-inch tv");
-        search.selectFromSearchOption("65-inch tv");
+        search.searchForProduct("65-inch tv");
         search.selectItemFromList();
-    }
-
-
-    @Test(priority=3)
-    public void AmazonAddToCart() {
         product.clickOnAddToCart();
         product.clickToViewCart();
         product.clickProceedToBuy();
     }
 
 
-    @Test(priority=4)
+    @Test(priority=3)
     public void AmazonProceedToCheckOut() {
         purchase.clickUseThisAddress();
         purchase.selectPreferedTimeSlot();
@@ -45,7 +37,7 @@ public class Purchase_Product_Scenario {
     }
 
 
-    @Test(priority=5)
+    @Test(priority=4)
     public void AmazonDeleteProductsFromCart(){
         home.navigateToHome();
         home.deleteProductsAddedToCart();

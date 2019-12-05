@@ -1,5 +1,6 @@
 package config;
 
+import base.Utils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -9,10 +10,11 @@ import java.net.URL;
 public class Amazon_Config {
 
     static public AppiumDriver driver;
+    public String working_directory = System.getProperty("user.dir");
 
     public void intializeDriver(){
         try {
-            driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), androidCapabilities());
+            driver = new AndroidDriver(new URL(Utils.getValueForParam("url_android")), androidCapabilities());
         }
         catch(MalformedURLException e){
             System.out.println("Url exception while defining the driver: \n");
@@ -27,16 +29,16 @@ public class Amazon_Config {
     private DesiredCapabilities androidCapabilities(){
         System.out.println("Setting Android Desired Capabilities");
         DesiredCapabilities androidCapabilities = new DesiredCapabilities();
-        androidCapabilities.setCapability("deviceName", "Moto G4");
-        androidCapabilities.setCapability("automationName", "uiautomator2");
-        androidCapabilities.setCapability("platformVersion", "7.0");
-        androidCapabilities.setCapability("app", System.getProperty("user.dir") + "/app/amazon_shopping.apk");
-        androidCapabilities.setCapability("autoAcceptAlerts", true);
+        androidCapabilities.setCapability("deviceName", Utils.getValueForParam("android_device"));
+        androidCapabilities.setCapability("automationName", Utils.getValueForParam("automation_type"));
+        androidCapabilities.setCapability("app", working_directory + Utils.getValueForParam("android_app"));
+        androidCapabilities.setCapability("platformVersion", Utils.getValueForParam("android_version"));
         androidCapabilities.setCapability("newCommandTimeout", 500);
+        androidCapabilities.setCapability("autoAcceptAlerts", true);
         androidCapabilities.setCapability("autoGrantPermissions",true);
         androidCapabilities.setCapability("dontStopAppOnReset",true);
-        androidCapabilities.setCapability(  "appPackage", "com.amazon.mShop.android.shopping");
-        androidCapabilities.setCapability(  "appActivity", "com.amazon.mShop.home.HomeActivity");
+        androidCapabilities.setCapability(  "appPackage", Utils.getValueForParam("app_package"));
+        androidCapabilities.setCapability(  "appActivity", Utils.getValueForParam("app_activity"));
         return androidCapabilities;
     }
 

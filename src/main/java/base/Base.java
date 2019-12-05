@@ -16,7 +16,6 @@ import java.util.*;
 
 public class Base extends Amazon_Config{
 
-    private static Map<String,String> parameters =new HashMap<String, String>();
 
     /**
      * Wait explicitly for an element to be visible.
@@ -34,7 +33,7 @@ public class Base extends Amazon_Config{
 
 
     /**
-     * Wait explicitly for an element to be visible.
+     * Wait explicitly for an element to be invisible.
      * @param by Element to be visible
      * @param waitTime time in secs
      */
@@ -49,11 +48,11 @@ public class Base extends Amazon_Config{
 
 
     /**
-     * Wait explicitly for an element to be visible.
+     * Wait explicitly for an elements to be present on the screen.
      * @param by Element to be visible
      * @param waitTime time in secs
      */
-    protected List<WebElement> waitForPresenceOfElements(By by, int waitTime) {
+    private List<WebElement> waitForPresenceOfElements(By by, int waitTime) {
         try {
             return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
         } catch (Exception e) {
@@ -62,94 +61,106 @@ public class Base extends Amazon_Config{
         return null;
     }
 
-    protected WebElement findElementByXpath(String xpath){ return waitForVisibilityOfElement(By.xpath(xpath), 15); }
 
-    protected List<WebElement> findElementsByXpath(String xpath){ return waitForPresenceOfElements(By.xpath(xpath), 15); }
+    /**
+     * Search for element by Xpath
+     * @param xpath xpath locator for element
+     */
+    private WebElement findElementByXpath(String xpath){
+        return waitForVisibilityOfElement(By.xpath(xpath), 15);
+    }
 
-    protected WebElement findElementByID(String id){
+
+    /**
+     * Search for elemens by Xpath
+     * @param xpath xpath locator for element
+     */
+    protected List<WebElement> findElementsByXpath(String xpath){
+        return waitForPresenceOfElements(By.xpath(xpath), 15);
+    }
+
+
+    /**
+     * Search for elements by id
+     * @param id id locator for element
+     */
+    private WebElement findElementByID(String id){
         return waitForVisibilityOfElement(By.id(id), 15);
     }
 
+
+    /**
+     * Search for elements by id
+     * @param id id locator for element
+     */
     protected List<WebElement> findElementsByID(String id){
-        return waitForPresenceOfElements(By.id(id), 15);
+        return waitForPresenceOfElements(By.id(id), 20);
     }
 
 
-
-
+    /**
+     * Click on element located by ID
+     * @param id id locator for element
+     */
     protected void clickElementByID(String id){ findElementByID(id).click(); }
 
+
+    /**
+     * Send keys to an element located by ID
+     * @param id id locator for element
+     */
     protected void sendKeysToElementByID(String id, String value){
         findElementByID(id).sendKeys(value);
     }
 
+
+    /**
+     * Send keys to an element located by XPATH
+     * @param xpath xpath locator for element
+     */
     protected void sendKeysToElementByXpath(String xpath, String value){
         findElementByXpath(xpath).sendKeys(value);
     }
 
+
+    /**
+     * Click on element located by Xpath
+     * @param xpath xpath locator for element
+     */
     protected void clickElementByXpath(String xpath){ findElementByXpath(xpath).click(); }
 
+
+    /**
+     * Scroll to an element located by ResourceID
+     * @param resource_id resource id locator for element
+     */
     public void scrollToElementByResourceID(String resource_id){
         getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceId(\"" + resource_id + "\"));"));
     }
 
+
+    /**
+     * Scroll to an element located by text
+     * @param text text for element
+     */
     protected void scrollToElementByText(String text){
         getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().text(\"" + text + "\"));"));
     }
 
 
-    protected void uninstallApp() {
-        getDriver().removeApp("bundle_id");
+    /**
+     * Uninstall app based on bundle id of the app
+     * @param bundle_id id for the app
+     */
+    protected void uninstallApp(String bundle_id) {
+        getDriver().removeApp(bundle_id);
     }
 
 
+    /**
+     * Reset the state of the app
+     */
     protected void relaunchApp() { getDriver().resetApp(); }
-
-
-    /**
-     * readInternalHash - Will read the specified parameter from the local data structure which
-     * is loaded by readEntirePropertyFile function
-     * @param param - parameter name to read from the file
-     * @return  returns the value of the parameter
-     */
-    protected static String readInternalHash(String param)
-    {
-        if(parameters.containsKey(param.toLowerCase()))
-        {
-            return parameters.get(param).trim();
-        }
-        else if(param.startsWith("//") || param.startsWith("(//"))
-            return param;
-        else
-        {
-            return "";
-        }
-    }
-    /**
-     * readEntirePropertyFile - will read the entire property file in local data structure
-     * which can then be read using readInternalHash function
-     * @param filename - name of the file to read
-     * @return returns the value of the parameter
-     */
-    protected static void readEntirePropertyFile(String filename)
-    {
-        try {
-            File file = new File(filename);
-            FileInputStream fileInput = new FileInputStream(file);
-            Properties properties = new Properties();
-            properties.load(fileInput);
-            fileInput.close();
-            Enumeration<?> e = properties.propertyNames();
-            while (e.hasMoreElements()) {
-                String key = (String) e.nextElement();
-                String value = properties.getProperty(key);
-                parameters.put(key.toLowerCase(), value);
-            }
-            System.out.println("Reading "+filename);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-    }
 
 
     protected void waitTimer(int time){
@@ -160,6 +171,7 @@ public class Base extends Amazon_Config{
             e.printStackTrace();
         }
     }
+
 
 
 }

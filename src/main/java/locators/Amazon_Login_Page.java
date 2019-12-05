@@ -10,7 +10,7 @@ public class Amazon_Login_Page extends Base {
         return "sign_in_button";
     }
 
-    private String emailTextboxID(){
+    private String emailTextBoxID(){
         return "//android.widget.EditText[@resource-id='ap_email_login']";
     }
 
@@ -31,21 +31,29 @@ public class Amazon_Login_Page extends Base {
         waitForElementToBeInvisible(By.id(customerSignInButtonID()), 5);
     }
 
+
     public void enterLoginEmailAddress(String email){
-        sendKeysToElementByXpath(emailTextboxID(), email);
+        sendKeysToElementByXpath(emailTextBoxID(), email);
     }
+
 
     public void clickOnContinueButton(){
         clickElementByXpath(continueButtonID());
     }
 
-    public void enterLoginPaasword(String password){
+
+    public void enterLoginPassword(String password){
         sendKeysToElementByXpath(passwordButtonID(), password);
     }
+
 
     public void clickOnSignInButton(){
         clickElementByXpath(submitSignInButtonID());
     }
 
+    public void enterUserName(String email){
+        enterLoginEmailAddress(email);
+        clickOnContinueButton();
+    }
 
 }
