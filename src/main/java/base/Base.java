@@ -62,16 +62,16 @@ public class Base extends Amazon_Config{
         return null;
     }
 
-    protected WebElement findElementByXpath(String xpath){ return waitForVisibilityOfElement(By.xpath(xpath), 10); }
+    protected WebElement findElementByXpath(String xpath){ return waitForVisibilityOfElement(By.xpath(xpath), 15); }
 
-    protected List<WebElement> findElementsByXpath(String xpath){ return waitForPresenceOfElements(By.xpath(xpath), 10); }
+    protected List<WebElement> findElementsByXpath(String xpath){ return waitForPresenceOfElements(By.xpath(xpath), 15); }
 
     protected WebElement findElementByID(String id){
-        return waitForVisibilityOfElement(By.id(id), 10);
+        return waitForVisibilityOfElement(By.id(id), 15);
     }
 
     protected List<WebElement> findElementsByID(String id){
-        return waitForPresenceOfElements(By.id(id), 10);
+        return waitForPresenceOfElements(By.id(id), 15);
     }
 
 

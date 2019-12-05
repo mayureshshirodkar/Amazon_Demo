@@ -4,7 +4,7 @@
     <test name="Amazon_Product_Purchase">
         <classes>
             <class name="setup.AmazonSetup" />
-            <class name="Purchase_Amazon_Product" />
+            <class name="Purchase_Product_Scenario" />
         </classes>
     </test>
 </suite>
