@@ -1,4 +1,7 @@
-package base;
+package utilities;
+
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +15,9 @@ public class Utils {
 
 
     private static Map<String,String> parameters =new HashMap<String, String>();
+    static XSSFWorkbook wb;
+    static XSSFSheet sheet;
+
 
     /**
      * Will read the specified parameter from the local data structure which
@@ -53,5 +59,24 @@ public class Utils {
             e1.printStackTrace();
         }
     }
+
+
+    public static Object[][] readExcelFile(String filename) throws IOException {
+            FileInputStream fileInput = new FileInputStream(new File(filename));
+            wb = new XSSFWorkbook(fileInput);
+
+            sheet = wb.getSheetAt(0);
+
+            int row_count = sheet.getLastRowNum();
+            Object[][] data = new Object[row_count][2];
+
+            for (int i = 0; i < row_count; i++) {
+                data[i][0] = sheet.getRow(i).getCell(0).getStringCellValue();
+                data[0][i] = sheet.getRow(i).getCell(0).getStringCellValue();
+            }
+
+        return data;
+    }
+
 
 }

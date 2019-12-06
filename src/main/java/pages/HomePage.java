@@ -1,4 +1,4 @@
-package locators;
+package pages;
 
 import base.Base;
 import org.openqa.selenium.By;
@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class Amazon_Home_Page extends Base {
+public class HomePage extends Base {
 
-    Amazon_Product_Page product_page_page = new Amazon_Product_Page();
+    private ProductPage product_page = new ProductPage();
 
     private String saveLanguageChangeLocator(){ return "//android.widget.Button[@text='Save Changes']";}
 
@@ -32,7 +32,7 @@ public class Amazon_Home_Page extends Base {
     }
 
     public void deleteProductsAddedToCart(){
-        product_page_page.clickToViewCart();
+        product_page.clickToViewCart();
         scrollToElementByText("Delete");
         List<WebElement> products = findElementsByXpath(deleteProductLocator());
         for(WebElement product:products){

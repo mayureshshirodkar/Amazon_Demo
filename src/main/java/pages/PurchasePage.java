@@ -1,11 +1,12 @@
-package locators;
+package pages;
 
 import base.Base;
 import org.openqa.selenium.By;
 
-public class Amazon_Purchase_Page extends Base {
 
-    private String useThisAdressLocator(){ return "//android.widget.Button[@resource-id='a-autoid-0-announce']"; }
+public class PurchasePage extends Base {
+
+    private String useThisAddressLocator(){ return "//android.widget.Button[@resource-id='a-autoid-0-announce']"; }
 
     private String preferedTimeSlotLocator(){return "//android.view.View[@text='10:00 - 11:30 AM']";}
 
@@ -17,12 +18,14 @@ public class Amazon_Purchase_Page extends Base {
 
     private String selectBankForNetbanking(String bank){ return "//android.view.View[@text='"+ bank +"']"; }
 
+    private String verifyButtonLocator(){ return "//android.widget.Button[@text='Verify']"; }
+
     private String placeYourOrderLocator(){ return "//android.widget.Button[@text='Place Your Order and Pay']"; }
 
 
     public void clickUseThisAddress(){
         waitTimer(2000);
-        clickElementByXpath(useThisAdressLocator());
+        clickElementByXpath(useThisAddressLocator());
         waitTimer(2000);
     }
 
@@ -45,8 +48,32 @@ public class Amazon_Purchase_Page extends Base {
     public void selectNetBankingOption(String bank){
         clickElementByXpath(chooseBankOptionLocator());
         clickElementByXpath(selectBankForNetbanking(bank));
+    }
+
+    public void selectUPI(String vpa_value){
+        sendKeysToElementByXpath("", vpa_value);
+        clickElementByXpath(verifyButtonLocator());
+    }
+
+    public void selectPaymentAndProceed(String payment_option){
+
+        String[] options = payment_option.split(" - ");
+        String payment_method = options[0];
+        String payment_method_detail = options[1];
+
+        clickOnPaymentOption(payment_method);
+
+        if(payment_method.equalsIgnoreCase("Net Banking"))
+            selectNetBankingOption(payment_method_detail);
+
+        else if(payment_method.equalsIgnoreCase("UPI"))
+            selectUPI(payment_method_detail);
+
+
         clickOnContinueButton();
         waitForVisibilityOfElement(By.xpath(placeYourOrderLocator()), 10);
+
+
     }
 
 }

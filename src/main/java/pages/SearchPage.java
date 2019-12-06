@@ -1,11 +1,10 @@
-package locators;
+package pages;
 
 import base.Base;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import java.util.List;
 
-public class Amazon_Search_Page extends Base {
+public class SearchPage extends Base {
 
     private String itemSearchTextBoxID(){ return "rs_search_src_text"; }
 

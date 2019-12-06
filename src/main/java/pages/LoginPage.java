@@ -1,9 +1,9 @@
-package locators;
+package pages;
 
 import base.Base;
 import org.openqa.selenium.By;
 
-public class Amazon_Login_Page extends Base {
+public class LoginPage extends Base {
 
 
     private String customerSignInButtonID(){

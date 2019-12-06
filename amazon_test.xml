@@ -3,8 +3,8 @@
 <suite name="Amazon_Test">
     <test name="Amazon_Product_Purchase">
         <classes>
-            <class name="setup.AmazonSetup" />
-            <class name="Purchase_Product_Scenario" />
+            <class name="config.Config" />
+            <class name="PurchaseScenario" />
         </classes>
     </test>
 </suite>

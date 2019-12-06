@@ -1,20 +1,15 @@
 package base;
 
-import config.Amazon_Config;
-import io.appium.java_client.AppiumDriver;
+import config.Config;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.*;
 
-public class Base extends Amazon_Config{
+public class Base extends Config {
 
 
     /**
@@ -135,7 +130,7 @@ public class Base extends Amazon_Config{
      * @param resource_id resource id locator for element
      */
     public void scrollToElementByResourceID(String resource_id){
-        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceId(\"" + resource_id + "\"));"));
+        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceIdMatches(\"" + resource_id + "\"));"));
     }
 
 
@@ -144,7 +139,7 @@ public class Base extends Amazon_Config{
      * @param text text for element
      */
     protected void scrollToElementByText(String text){
-        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().text(\"" + text + "\"));"));
+        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\"));"));
     }
 
 

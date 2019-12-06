@@ -1,9 +1,9 @@
-package locators;
+package pages;
 
 import base.Base;
 import org.openqa.selenium.By;
 
-public class Amazon_Product_Page extends Base {
+public class ProductPage extends Base {
 
     private String addToCartButtonLocator(){ return "//android.widget.Button[@resource-id='add-to-cart-button']"; }
 
@@ -13,7 +13,7 @@ public class Amazon_Product_Page extends Base {
 
 
     public void clickOnAddToCart(){
-        waitTimer(2000);
+        waitTimer(4000);
         scrollToElementByText("Add to Cart");
         waitForVisibilityOfElement(By.xpath(addToCartButtonLocator()), 5);
         clickElementByXpath(addToCartButtonLocator());
