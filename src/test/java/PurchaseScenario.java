@@ -15,6 +15,7 @@ public class PurchaseScenario {
         login.enterUserName(user);
         login.enterLoginPassword(password);
         login.clickOnSignInButton();
+        login.verifySuccessfulLogin();
     }
 
     @Test(priority=2, dataProvider = "scenario_details", dataProviderClass = TestDataProvider.class)

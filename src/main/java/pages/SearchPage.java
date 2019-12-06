@@ -25,10 +25,10 @@ public class SearchPage extends Base {
         clickElementByXpath(searchResultXpath(value));
     }
 
-    public void selectItemFromList(){
+    public String selectItemFromList(){
         List<WebElement> element = findElementsByID(searchItemsLocator());
         element.get(1).click();
-        waitTimer(2000);
+        return element.get(1).getText();
     }
 
 
