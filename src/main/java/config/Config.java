@@ -15,13 +15,17 @@ public class Config {
     static private AppiumDriver driver=null;
     private String working_directory = System.getProperty("user.dir");
 
+    /**
+     * Defines Android Capabilities
+     * @return DesiredCapabilities
+     */
     private DesiredCapabilities androidCapabilities(){
         System.out.println("Setting Android Desired Capabilities");
         DesiredCapabilities androidCapabilities = new DesiredCapabilities();
         androidCapabilities.setCapability("deviceName", Utils.getValueForParam("android_device"));
         androidCapabilities.setCapability("automationName", Utils.getValueForParam("automation_type"));
         androidCapabilities.setCapability("app", working_directory + Utils.getValueForParam("android_app"));
-        androidCapabilities.setCapability("platformVersion", Utils.getValueForParam("android_version"));
+        androidCapabilities.setCapability("platformVersion", Utils.findAndroidVersion());
         androidCapabilities.setCapability("newCommandTimeout", Utils.getValueForParam("timeout"));
         androidCapabilities.setCapability("appPackage", Utils.getValueForParam("app_package"));
         androidCapabilities.setCapability("appActivity", Utils.getValueForParam("app_activity"));
@@ -31,6 +35,9 @@ public class Config {
         return androidCapabilities;
     }
 
+    /**
+     * Initialise the WebDriver session
+     */
     @BeforeTest(alwaysRun = true)
     public void initialize(){
         try {
@@ -44,6 +51,10 @@ public class Config {
         }
     }
 
+
+    /**
+     * Quit the running WebDriver session
+     */
     @AfterTest(alwaysRun = true)
     public void quit() {
         try {
@@ -54,6 +65,10 @@ public class Config {
         }
     }
 
+    /**
+     * Get the Webdriver instance
+     * @return driver
+     */
     protected AppiumDriver getDriver() {
         return driver;
     }

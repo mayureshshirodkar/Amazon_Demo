@@ -128,6 +128,26 @@ public class Base extends Config {
      */
     protected void clickElementByXpath(String xpath){ findElementByXpath(xpath).click(); }
 
+    /**
+     * Scroll to an element located by text
+     * @param text text for element
+     */
+    protected void scrollToElementByText(String text){
+        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\").instance(0));"));
+    }
+
+    /**
+     *  Wait for application to pause for the time
+     * @param time time to pause application in seconds
+     */
+    protected void waitTimer(int time){
+        try {
+            Thread.sleep(time*1000);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Scroll to an element located by ResourceID
@@ -135,15 +155,6 @@ public class Base extends Config {
      */
     public void scrollToElementByResourceID(String resource_id){
         getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceIdMatches(\"" + resource_id + "\"));"));
-    }
-
-
-    /**
-     * Scroll to an element located by text
-     * @param text text for element
-     */
-    protected void scrollToElementByText(String text){
-        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\").instance(0));"));
     }
 
     /**
@@ -206,18 +217,7 @@ public class Base extends Config {
     protected void relaunchApp() { getDriver().resetApp(); }
 
 
-    /**
-     *  Wait for application to pause for the time
-     * @param time time to pause application
-     */
-    protected void waitTimer(int time){
-        try {
-            Thread.sleep(time);
-        }
-        catch (InterruptedException e){
-            e.printStackTrace();
-        }
-    }
+
 
 
 

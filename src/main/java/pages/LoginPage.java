@@ -36,6 +36,7 @@ public class LoginPage extends Base {
 
     /**
      * Enter user email address
+     * @param email email address for login
      */
     public void enterLoginEmailAddress(String email){
         sendKeysToElementByXpath(emailTextBoxID(), email);
@@ -51,7 +52,7 @@ public class LoginPage extends Base {
 
     /**
      * Enter user password
-     * @param password
+     * @param password password parameter for login
      */
     public void enterLoginPassword(String password){
         sendKeysToElementByXpath(passwordButtonID(), password);

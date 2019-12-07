@@ -11,52 +11,71 @@ import java.util.Set;
 
 public class ProductPage extends Base {
 
-    protected static String addToCartButtonLocator(){ return "//android.widget.Button[@resource-id='add-to-cart-button']"; }
+    private static String addToCartButtonLocator(){ return "//android.widget.Button[@resource-id='add-to-cart-button']"; }
 
-    protected static String viewCartButtonLocator(){ return "//android.widget.ImageView[@content-desc='Cart']"; }
+    private static String viewCartButtonLocator(){ return "//android.widget.ImageView[@content-desc='Cart']"; }
 
-    protected static String proceedToBuyButtonLocator(){ return "//android.widget.Button[@text='Proceed to Buy']"; }
+    private static String proceedToBuyButtonLocator(){ return "//android.widget.Button[@text='Proceed to Buy']"; }
 
-    protected static String selectedProductTitleLocator(){ return "//android.view.View[@resource-id='title_feature_div']/android.view.View";}
+    private static String selectedProductTitleLocator(){ return "//android.view.View[@resource-id='title_feature_div']/android.view.View";}
 
-    protected static String selectedProductTitleInCartLocator(String product){ return "//android.widget.Image[contains(@text,'" + product + "')]";}
+    private static String selectedProductTitleInCartLocator(String product){ return "//android.widget.Image[contains(@text,'" + product + "')]";}
 
-    protected static String selectedProductPriceInCartLocator(String price){ return "//android.view.View[contains(@text,'" + price + "')]";}
+    private static String selectedProductPriceInCartLocator(String price){ return "//android.view.View[contains(@text,'" + price + "')]";}
 
-    protected static String selectedProductQuantityInCartLocator(){ return "//android.view.View[contains(@resource-id,'quantity-label')]/android.view.View";}
+    private static String selectedProductQuantityInCartLocator(){ return "//android.view.View[contains(@resource-id,'quantity-label')]/android.view.View";}
 
-    protected static String selectedProductInstallationInCartLocator(){ return "//android.view.View[contains(@text, 'TV Installation Service')]";}
+    private static String selectedProductInstallationInCartLocator(){ return "//android.view.View[contains(@text, 'TV Installation Service')]";}
 
-    protected static String selectedProductInstallationPriceInCartLocator(){ return "//android.view.View[contains(@text, '0.00')]";}
+    private static String selectedProductInstallationPriceInCartLocator(){ return "//android.view.View[contains(@text, '0.00')]";}
 
 
+    /**
+     * Click on the add to cart button
+     */
     public void clickOnAddToCart(){
-        waitTimer(2000);
+        waitTimer(2);
 //        scrollToElementByText("TV Buying Guide");
         waitForVisibilityOfElement(By.xpath(addToCartButtonLocator()), 5);
         clickElementByXpath(addToCartButtonLocator());
 
     }
 
+    /**
+     * Click on the view cart button
+     */
     public void clickToViewCart(){
         clickElementByXpath(viewCartButtonLocator());
         waitForVisibilityOfElement(By.xpath(proceedToBuyButtonLocator()), 15);
     }
 
+
+    /**
+     * Scroll to and Click on the proceed to buy button
+     */
     public void clickProceedToBuy() {
         scroll("up");
-        waitTimer(2000);
+        waitTimer(2);
         clickElementByXpath(proceedToBuyButtonLocator());
     }
 
+    /**
+     * Extract the product title from product details
+     */
     public String getProductTitleOnProductDetails(){
         return findElementByXpath(selectedProductTitleLocator()).getText();
     }
 
+    /**
+     * Assert to verify correct product is selected
+     */
     public void verifyCorrectProductSelected(String product){
         Assert.assertEquals(product, getProductTitleOnProductDetails(), "Product title different from searched product");
     }
 
+    /**
+     * Check the quantity of items in the cart
+     */
     public Set<String> pickCartQuantityValue(){
         Set<String> quantity_value = new HashSet<String>();
         List<WebElement> quanities = findElementsByXpath(selectedProductQuantityInCartLocator());
@@ -67,6 +86,10 @@ public class ProductPage extends Base {
 
     }
 
+
+    /**
+     * Verify the cart details as compared to the search page
+     */
     public void verifyCartDetails(String product, String price) {
         scroll("down");
 

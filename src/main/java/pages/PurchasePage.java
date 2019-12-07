@@ -24,43 +24,70 @@ public class PurchasePage extends Base {
     private String placeYourOrderLocator(){ return "//android.widget.Button[@text='Place Your Order and Pay']"; }
 
 
+    /**
+     * Click on the use this address button
+     */
     public void clickUseThisAddress(){
-        waitTimer(2000);
+        waitTimer(2);
         clickElementByXpath(useThisAddressLocator());
-        waitTimer(2000);
+        waitTimer(2);
     }
 
+    /**
+     * Assert the user is on Place order and pay page
+     */
     public void verifyUserOnPlaceOrder(){
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(placeYourOrderLocator()), 10).isDisplayed(),
                 "Assertion Failed! Payment option not shown");
     }
 
+    /**
+     * Click on the continue button
+     */
     public void clickOnContinueButton(){
         scrollToElementByText("Continue");
         clickElementByXpath(continueButtonLocator());
     }
 
+    /**
+     * Click on the prefered time slot
+     */
     public void selectPreferedTimeSlot(){
         clickOnContinueButton();
         clickElementByXpath(preferedTimeSlotLocator());
         clickOnContinueButton();
     }
 
+    /**
+     * Click on the payment option
+     */
     public void clickOnPaymentOption(String option){
         scrollToElementByText(option);
         clickElementByXpath(paymentOptionLocator(option));
     }
 
+    /**
+     * Click on the bank used for netbanking
+     * @param bank - Bank to be used for netbanking
+     */
     public void selectNetBankingOption(String bank){
         clickElementByXpath(chooseBankOptionLocator());
         clickElementByXpath(selectBankForNetbanking(bank));
     }
 
+    /**
+     * Click on the vpa to be used for UPI payment
+     * @param vpa_value - VPA to be used for UPI
+     */
     public void selectUPI(String vpa_value){
         sendKeysToElementByXpath("", vpa_value);
         clickElementByXpath(verifyButtonLocator());
     }
 
+    /**
+     * Select the payment option and complete payment
+     * @param payment_option - Payment options
+     */
     public void selectPaymentAndProceed(String payment_option){
 
         String[] options = payment_option.split(" - ");

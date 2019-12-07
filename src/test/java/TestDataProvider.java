@@ -3,6 +3,10 @@ import java.lang.reflect.Method;
 
 public class TestDataProvider {
 
+    /**
+     * Provides test data to the test scripts
+     * @param method_name Methods names for the tests
+     */
     @DataProvider(name="scenario_details")
     public static Object[][] provideScenarioDetails(Method method_name) {
 

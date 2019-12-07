@@ -3,9 +3,7 @@ package utilities;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +13,8 @@ public class Utils {
 
 
     private static Map<String,String> parameters =new HashMap<String, String>();
-    static XSSFWorkbook wb;
-    static XSSFSheet sheet;
+    private static XSSFWorkbook wb;
+    private static XSSFSheet sheet;
 
 
     /**
@@ -61,6 +59,47 @@ public class Utils {
     }
 
 
+    /**
+     * Run Bash Command
+     * @param command command to be run
+     */
+    public static String runBashCommands(String[] command) {
+        String line=null;
+        try {
+            Process runCommand=Runtime.getRuntime().exec(command);
+            runCommand.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(runCommand.getInputStream()));
+            line  = reader.readLine();
+            System.out.println("Done!");
+            return line;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return line;
+    }
+
+    /**
+     * Get Android Version using Adb commands
+     */
+    public static String findAndroidVersion(){
+        String androidVersion=null;
+        try {
+            String[] command={"bash", "-c","adb shell getprop ro.build.version.release"};
+            androidVersion=runBashCommands(command);
+            if(androidVersion!=null)
+                androidVersion=androidVersion.trim();
+            return androidVersion;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return androidVersion;
+    }
+
+    /**
+     * Read excel file into 2D array
+     * @param filename excel file to be extracted
+     */
     public static Object[][] readExcelFile(String filename) throws IOException {
             FileInputStream fileInput = new FileInputStream(new File(filename));
             wb = new XSSFWorkbook(fileInput);
@@ -77,6 +116,8 @@ public class Utils {
 
         return data;
     }
+
+
 
 
 }
