@@ -41,7 +41,7 @@ public class Config {
     @BeforeTest(alwaysRun = true)
     public void initialize(){
         try {
-            Utils.readEntirePropertyFile(working_directory + "/data/configuration.properties");
+            Utils.readEntirePropertyFile(working_directory + "/test_data/configuration.properties");
             if(driver==null)
                 driver = new AndroidDriver(new URL(Utils.getValueForParam("url_android")), androidCapabilities());
                 System.out.println("Driver Initialised!!");

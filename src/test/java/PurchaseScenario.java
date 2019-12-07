@@ -1,3 +1,4 @@
+import data.TestDataProvider;
 import pages.*;
 import org.testng.annotations.Test;
 
