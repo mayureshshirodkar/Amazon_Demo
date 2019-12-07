@@ -58,16 +58,26 @@ public class LoginPage extends Base {
     }
 
 
+    /**
+     * Click on Sign in button to Login to app
+     */
     public void clickOnSignInButton(){
         clickElementByXpath(submitSignInButtonID());
         waitForElementToBeInvisible(By.xpath(submitSignInButtonID()), 5);
     }
 
+    /**
+     * Enter Username and perform click on Continue button
+     */
     public void enterUserName(String email){
         enterLoginEmailAddress(email);
         clickOnContinueButton();
     }
 
+
+    /**
+     * Assert to check if Login is successful
+     */
     public void verifySuccessfulLogin(){
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(ProductPage.viewCartButtonLocator()), 5).isDisplayed(),
                 "Assertion Failed! user has failed to log in");

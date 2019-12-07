@@ -22,7 +22,9 @@ public class HomePage extends Base {
     private String emptyCartMessageLocator(){ return "//android.view.View[contains(@text,'Your Shopping Cart is empty.')]";}
 
 
-
+    /**
+     * Accept the app language selection popup
+     */
     public void acceptLanguagePopup(){
         if(waitForVisibilityOfElement(By.xpath(languageRadioLocator()), 15) != null) {
             clickElementByXpath(languageRadioLocator());
@@ -30,10 +32,17 @@ public class HomePage extends Base {
         }
     }
 
+    /**
+     * Tap on home and Navigate to Home page
+     */
     public void navigateToHome(){
         clickElementByXpath(homeButtonLocator());
     }
 
+
+    /**
+     * Delete all products added to cart
+     */
     public void deleteProductsAddedToCart(){
         product_page.clickToViewCart();
         scroll("down");

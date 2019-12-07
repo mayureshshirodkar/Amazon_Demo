@@ -2,14 +2,11 @@ package base;
 
 import config.Config;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -150,16 +147,23 @@ public class Base extends Config {
     }
 
     /**
-     * Scroll to an element located by text
+     * Fling to top of the scrollable page using UIAutomator
      */
-    protected void scrollToBegining(){
+    protected void scrollToTop(){
         ((AndroidDriver) getDriver()).findElementByAndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).flingBackward();");
     }
 
+    /**
+     * Fling to bottom of the scrollable page using UIAutomator
+     */
     protected void scrollBottom(){
         ((AndroidDriver) getDriver()).findElementByAndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).flingForward();");
     }
 
+    /**
+     * Scroll up/down the scrollable area
+     * @param direction - direction of scrolling the app
+     */
     protected void scroll(String direction){
         Dimension size = getDriver().manage().window().getSize();
         int startX;
@@ -170,7 +174,7 @@ public class Base extends Config {
              startX = size.getWidth() / 2;
              startY = size.getHeight() / 2;
              endX = size.getWidth() / 2;
-             endY = (int) (startY * 0.75);
+             endY = (int) (startY * 0.5);
         }
         else{
              startX = size.getWidth () / 2;
@@ -196,13 +200,16 @@ public class Base extends Config {
         getDriver().removeApp(bundle_id);
     }
 
-
     /**
      * Reset the state of the app
      */
     protected void relaunchApp() { getDriver().resetApp(); }
 
 
+    /**
+     *  Wait for application to pause for the time
+     * @param time time to pause application
+     */
     protected void waitTimer(int time){
         try {
             Thread.sleep(time);
