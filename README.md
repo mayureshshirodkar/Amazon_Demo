@@ -20,3 +20,5 @@ Utilities - Consists of methods to extract test data from properties file.
 
 App - Contains the application under test
 ```
+
+![Framework Overview](https://github.com/mayureshshirodkar/Amazon_Demo/blob/master/overview.png)
