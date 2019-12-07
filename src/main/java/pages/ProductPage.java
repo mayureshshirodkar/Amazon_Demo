@@ -13,7 +13,7 @@ public class ProductPage extends Base {
 
     private static String addToCartButtonLocator(){ return "//android.widget.Button[@resource-id='add-to-cart-button']"; }
 
-    private static String viewCartButtonLocator(){ return "//android.widget.ImageView[@content-desc='Cart']"; }
+    protected static String viewCartButtonLocator(){ return "//android.widget.ImageView[@content-desc='Cart']"; }
 
     private static String proceedToBuyButtonLocator(){ return "//android.widget.Button[@text='Proceed to Buy']"; }
 
@@ -35,7 +35,7 @@ public class ProductPage extends Base {
      */
     public void clickOnAddToCart(){
         waitTimer(2);
-//        scrollToElementByText("TV Buying Guide");
+        scrollToElementByText("Add to Cart");
         waitForVisibilityOfElement(By.xpath(addToCartButtonLocator()), 5);
         clickElementByXpath(addToCartButtonLocator());
 
@@ -54,7 +54,7 @@ public class ProductPage extends Base {
      * Scroll to and Click on the proceed to buy button
      */
     public void clickProceedToBuy() {
-        scroll("up");
+        scrollTo("up");
         waitTimer(2);
         clickElementByXpath(proceedToBuyButtonLocator());
     }
@@ -71,6 +71,7 @@ public class ProductPage extends Base {
      */
     public void verifyCorrectProductSelected(String product){
         Assert.assertEquals(product, getProductTitleOnProductDetails(), "Product title different from searched product");
+        System.out.println("Correct product selected and displayed!!");
     }
 
     /**
@@ -91,7 +92,7 @@ public class ProductPage extends Base {
      * Verify the cart details as compared to the search page
      */
     public void verifyCartDetails(String product, String price) {
-        scroll("down");
+        scrollTo("down");
 
         // Verify Product added to Cart
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductTitleInCartLocator(product)), 5).isDisplayed(),
@@ -111,6 +112,8 @@ public class ProductPage extends Base {
             Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductInstallationPriceInCartLocator()), 5).isDisplayed(),
                     "Product installation not provided");
         }
+
+        System.out.println("Cart details verified!!");
     }
 
 }

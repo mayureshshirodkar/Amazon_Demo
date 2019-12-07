@@ -82,6 +82,7 @@ public class LoginPage extends Base {
     public void verifySuccessfulLogin(){
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(ProductPage.viewCartButtonLocator()), 5).isDisplayed(),
                 "Assertion Failed! user has failed to log in");
+        System.out.println("Customer Logged in !!");
     }
 
 }

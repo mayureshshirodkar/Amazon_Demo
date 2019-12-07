@@ -173,9 +173,9 @@ public class Base extends Config {
 
     /**
      * Scroll up/down the scrollable area
-     * @param direction - direction of scrolling the app
+     * @param direction - direction of scrolling the scrollable ui
      */
-    protected void scroll(String direction){
+    protected void scrollTo(String direction){
         Dimension size = getDriver().manage().window().getSize();
         int startX;
         int startY;
@@ -183,9 +183,9 @@ public class Base extends Config {
         int endY;
         if(direction.equalsIgnoreCase("down")) {
              startX = size.getWidth() / 2;
-             startY = size.getHeight() / 2;
+             startY = (int) (size.getHeight () * 0.75);
              endX = size.getWidth() / 2;
-             endY = (int) (startY * 0.5);
+             endY = (int) (size.getHeight() * 0.2);
         }
         else{
              startX = size.getWidth () / 2;

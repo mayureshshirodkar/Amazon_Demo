@@ -39,6 +39,7 @@ public class PurchasePage extends Base {
     public void verifyUserOnPlaceOrder(){
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(placeYourOrderLocator()), 10).isDisplayed(),
                 "Assertion Failed! Payment option not shown");
+        System.out.println("Order placed successfully!!");
     }
 
     /**

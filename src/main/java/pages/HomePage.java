@@ -45,13 +45,14 @@ public class HomePage extends Base {
      */
     public void deleteProductsAddedToCart(){
         product_page.clickToViewCart();
-        scroll("down");
+        scrollTo("down");
         List<WebElement> products = findElementsByXpath(deleteProductLocator());
         for(WebElement product:products){
             product.click();
         }
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emptyCartMessageLocator()), 10).isDisplayed(),
                 "Assertion Failed! Payment option not shown");
+        System.out.println("Products removed from cart!!");
     }
 
 }

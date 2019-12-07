@@ -44,6 +44,7 @@ public class Config {
             Utils.readEntirePropertyFile(working_directory + "/data/configuration.properties");
             if(driver==null)
                 driver = new AndroidDriver(new URL(Utils.getValueForParam("url_android")), androidCapabilities());
+                System.out.println("Driver Initialised!!");
         }
         catch(MalformedURLException e){
             System.out.println("Url exception while defining the driver: \n");
@@ -59,6 +60,7 @@ public class Config {
     public void quit() {
         try {
             getDriver().quit();
+            System.out.println("WebDriver Session Quit!!");
         }
         catch(Exception e){
             e.printStackTrace();
