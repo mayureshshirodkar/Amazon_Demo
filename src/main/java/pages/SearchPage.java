@@ -10,6 +10,8 @@ public class SearchPage extends Base {
 
     private String searchItemsLocator(){ return "item_title";}
 
+    private String searchItemsPriceLocator(){ return "//android.view.ViewGroup[contains(@resource-id,'rs_results_styled_price_v2')]/android.widget.TextView";}
+
     private String searchResultXpath(String value){ return "//android.widget.TextView[@text='" + value + "']"; }
 
 
@@ -25,10 +27,9 @@ public class SearchPage extends Base {
         clickElementByXpath(searchResultXpath(value));
     }
 
-    public String selectItemFromList(){
+    public void selectItemFromList(){
         List<WebElement> element = findElementsByID(searchItemsLocator());
         element.get(1).click();
-        return element.get(1).getText();
     }
 
 
@@ -38,7 +39,13 @@ public class SearchPage extends Base {
         selectFromSearchOption(search_text);
     }
 
+    public String getProductTitleOnSearchPage(){
+        return findElementsByID(searchItemsLocator()).get(1).getText();
+    }
 
+    public String getProductPriceOnSearchPage(){
+        return findElementsByXpath(searchItemsPriceLocator()).get(1).getText().replace("₹","").split(" ")[0];
+    }
 
 
 }

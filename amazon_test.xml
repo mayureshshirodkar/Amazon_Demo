@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <suite name="Amazon_Test">
-    <test name="Amazon_Product_Purchase">
+    <test name="Amazon_Product_Purchase" preserve-order="true">
         <classes>
             <class name="config.Config" />
             <class name="PurchaseScenario" />
+                <methods preserve-order="true">
+                    <include name="AmazonLogin"/>
+                    <include name="AmazonSearchItem"/>
+                    <include name="AmazonProductDetails"/>
+                    <include name="AmazonProceedToCheckOut"/>
+                    <include name="AmazonDeleteProductsFromCart"/>
+                </methods>
         </classes>
     </test>
 </suite>

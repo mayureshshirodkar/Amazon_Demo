@@ -2,7 +2,14 @@ package base;
 
 import config.Config;
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -61,7 +68,7 @@ public class Base extends Config {
      * Search for element by Xpath
      * @param xpath xpath locator for element
      */
-    private WebElement findElementByXpath(String xpath){
+    protected WebElement findElementByXpath(String xpath){
         return waitForVisibilityOfElement(By.xpath(xpath), 15);
     }
 
@@ -139,7 +146,45 @@ public class Base extends Config {
      * @param text text for element
      */
     protected void scrollToElementByText(String text){
-        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\"));"));
+        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\").instance(0));"));
+    }
+
+    /**
+     * Scroll to an element located by text
+     */
+    protected void scrollToBegining(){
+        ((AndroidDriver) getDriver()).findElementByAndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).flingBackward();");
+    }
+
+    protected void scrollBottom(){
+        ((AndroidDriver) getDriver()).findElementByAndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).flingForward();");
+    }
+
+    protected void scroll(String direction){
+        Dimension size = getDriver().manage().window().getSize();
+        int startX;
+        int startY;
+        int endX;
+        int endY;
+        if(direction.equalsIgnoreCase("down")) {
+             startX = size.getWidth() / 2;
+             startY = size.getHeight() / 2;
+             endX = size.getWidth() / 2;
+             endY = (int) (startY * 0.75);
+        }
+        else{
+             startX = size.getWidth () / 2;
+             startY = (int) (size.getHeight () * 0.20);
+             endX = size.getWidth () / 2;
+             endY = (int) (size.getHeight () * 0.75);
+        }
+
+
+        TouchAction action = new TouchAction (getDriver());
+        action.press (PointOption.point(startX, startY))
+                .moveTo (PointOption.point(endX, endY))
+                .release ()
+                .perform ();
     }
 
 

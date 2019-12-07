@@ -3,6 +3,7 @@ package pages;
 import base.Base;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class HomePage extends Base {
     private String homeButtonLocator(){ return "//android.widget.ImageView[@content-desc='Home']";}
 
     private String deleteProductLocator(){ return "//android.widget.Button[@text='Delete']";}
+
+    private String emptyCartMessageLocator(){ return "//android.view.View[contains(@text,'Your Shopping Cart is empty.')]";}
 
 
 
@@ -33,11 +36,13 @@ public class HomePage extends Base {
 
     public void deleteProductsAddedToCart(){
         product_page.clickToViewCart();
-        scrollToElementByText("Delete");
+        scroll("down");
         List<WebElement> products = findElementsByXpath(deleteProductLocator());
         for(WebElement product:products){
             product.click();
         }
+        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emptyCartMessageLocator()), 10).isDisplayed(),
+                "Assertion Failed! Payment option not shown");
     }
 
 }

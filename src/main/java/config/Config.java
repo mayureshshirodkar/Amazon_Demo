@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class Config {
 
-    static private AppiumDriver driver;
+    static private AppiumDriver driver=null;
     private String working_directory = System.getProperty("user.dir");
 
     private DesiredCapabilities androidCapabilities(){
@@ -32,10 +32,11 @@ public class Config {
     }
 
     @BeforeTest(alwaysRun = true)
-    public void intializeDriver(){
+    public void initialize(){
         try {
             Utils.readEntirePropertyFile(working_directory + "/config/configuration.properties");
-            driver = new AndroidDriver(new URL(Utils.getValueForParam("url_android")), androidCapabilities());
+            if(driver==null)
+                driver = new AndroidDriver(new URL(Utils.getValueForParam("url_android")), androidCapabilities());
         }
         catch(MalformedURLException e){
             System.out.println("Url exception while defining the driver: \n");
@@ -44,7 +45,7 @@ public class Config {
     }
 
     @AfterTest(alwaysRun = true)
-    public void quitAppium() {
+    public void quit() {
         try {
             getDriver().quit();
         }

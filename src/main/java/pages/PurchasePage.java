@@ -2,13 +2,14 @@ package pages;
 
 import base.Base;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
 
 public class PurchasePage extends Base {
 
     private String useThisAddressLocator(){ return "//android.widget.Button[@resource-id='a-autoid-0-announce']"; }
 
-    private String preferedTimeSlotLocator(){return "//android.view.View[@text='10:00 - 11:30 AM']";}
+    private String preferedTimeSlotLocator(){return "//android.view.View[@text='11:30 - 1:00 PM']";}
 
     private String continueButtonLocator(){ return "//android.widget.Button[@text='Continue']"; }
 
@@ -27,6 +28,11 @@ public class PurchasePage extends Base {
         waitTimer(2000);
         clickElementByXpath(useThisAddressLocator());
         waitTimer(2000);
+    }
+
+    public void verifyUserOnPlaceOrder(){
+        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(placeYourOrderLocator()), 10).isDisplayed(),
+                "Assertion Failed! Payment option not shown");
     }
 
     public void clickOnContinueButton(){
@@ -69,11 +75,10 @@ public class PurchasePage extends Base {
         else if(payment_method.equalsIgnoreCase("UPI"))
             selectUPI(payment_method_detail);
 
-
         clickOnContinueButton();
-        waitForVisibilityOfElement(By.xpath(placeYourOrderLocator()), 10);
-
 
     }
+
+
 
 }

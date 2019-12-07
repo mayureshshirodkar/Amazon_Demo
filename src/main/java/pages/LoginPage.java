@@ -25,25 +25,34 @@ public class LoginPage extends Base {
     }
 
 
-
+    /**
+     * Click on already a customer button
+     */
     public void clickOnAlreadyCustomer(){
         clickElementByID(customerSignInButtonID());
-        waitForElementToBeInvisible(By.id(customerSignInButtonID()), 5);
-        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emailTextBoxID()), 5).isDisplayed(),
+        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emailTextBoxID()), 15).isDisplayed(),
                 "Assertion Failed! User is not navigated to Welcome screen");
     }
 
-
+    /**
+     * Enter user email address
+     */
     public void enterLoginEmailAddress(String email){
         sendKeysToElementByXpath(emailTextBoxID(), email);
     }
 
 
+    /**
+     * Click on continue to next page
+     */
     public void clickOnContinueButton(){
         clickElementByXpath(continueButtonID());
     }
 
-
+    /**
+     * Enter user password
+     * @param password
+     */
     public void enterLoginPassword(String password){
         sendKeysToElementByXpath(passwordButtonID(), password);
     }
@@ -51,6 +60,7 @@ public class LoginPage extends Base {
 
     public void clickOnSignInButton(){
         clickElementByXpath(submitSignInButtonID());
+        waitForElementToBeInvisible(By.xpath(submitSignInButtonID()), 5);
     }
 
     public void enterUserName(String email){
