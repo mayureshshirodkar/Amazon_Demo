@@ -172,10 +172,10 @@ public class Base extends Config {
     }
 
     /**
-     * Scroll up/down the scrollable area
+     * Swipe up/down the scrollable area
      * @param direction - direction of scrolling the scrollable ui
      */
-    protected void scrollTo(String direction){
+    protected void swipeInDirection(String direction){
         Dimension size = getDriver().manage().window().getSize();
         int startX;
         int startY;

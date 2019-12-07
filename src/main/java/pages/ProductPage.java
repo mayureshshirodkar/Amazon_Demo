@@ -54,7 +54,7 @@ public class ProductPage extends Base {
      * Scroll to and Click on the proceed to buy button
      */
     public void clickProceedToBuy() {
-        scrollTo("up");
+        swipeInDirection("up");
         waitTimer(2);
         clickElementByXpath(proceedToBuyButtonLocator());
     }
@@ -92,7 +92,7 @@ public class ProductPage extends Base {
      * Verify the cart details as compared to the search page
      */
     public void verifyCartDetails(String product, String price) {
-        scrollTo("down");
+        swipeInDirection("down");
 
         // Verify Product added to Cart
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductTitleInCartLocator(product)), 5).isDisplayed(),

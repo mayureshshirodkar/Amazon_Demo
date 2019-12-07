@@ -45,7 +45,7 @@ public class HomePage extends Base {
      */
     public void deleteProductsAddedToCart(){
         product_page.clickToViewCart();
-        scrollTo("down");
+        swipeInDirection("down");
         List<WebElement> products = findElementsByXpath(deleteProductLocator());
         for(WebElement product:products){
             product.click();
