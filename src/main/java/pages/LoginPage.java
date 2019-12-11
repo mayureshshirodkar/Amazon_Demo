@@ -6,31 +6,23 @@ import org.testng.Assert;
 
 public class LoginPage extends Base {
 
-    private String customerSignInButtonID(){
-        return "sign_in_button";
-    }
+    private String customerSignInButtonID = "sign_in_button";
 
-    private String emailTextBoxID(){
-        return "//android.widget.EditText[@resource-id='ap_email_login']";
-    }
+    private String emailTextBoxID = "//android.widget.EditText[@resource-id='ap_email_login']";
 
-    private String continueButtonID(){ return "//android.widget.Button[@resource-id='continue']"; }
+    private String continueButtonID= "//android.widget.Button[@resource-id='continue']";
 
-    private String passwordButtonID(){
-        return "//android.widget.EditText[@resource-id='ap_password']";
-    }
+    private String passwordButtonID = "//android.widget.EditText[@resource-id='ap_password']";
 
-    private String submitSignInButtonID(){
-        return "//android.widget.Button[@resource-id='signInSubmit']";
-    }
+    private String submitSignInButtonID = "//android.widget.Button[@resource-id='signInSubmit']";
 
 
     /**
      * Click on already a customer button
      */
     public void clickOnAlreadyCustomer(){
-        clickElementByID(customerSignInButtonID());
-        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emailTextBoxID()), 15).isDisplayed(),
+        clickElementByID(customerSignInButtonID);
+        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emailTextBoxID), 15).isDisplayed(),
                 "Assertion Failed! User is not navigated to Welcome screen");
     }
 
@@ -39,7 +31,7 @@ public class LoginPage extends Base {
      * @param email email address for login
      */
     public void enterLoginEmailAddress(String email){
-        sendKeysToElementByXpath(emailTextBoxID(), email);
+        sendKeysToElementByXpath(emailTextBoxID, email);
     }
 
 
@@ -47,7 +39,7 @@ public class LoginPage extends Base {
      * Click on continue to next page
      */
     public void clickOnContinueButton(){
-        clickElementByXpath(continueButtonID());
+        clickElementByXpath(continueButtonID);
     }
 
     /**
@@ -55,7 +47,7 @@ public class LoginPage extends Base {
      * @param password password parameter for login
      */
     public void enterLoginPassword(String password){
-        sendKeysToElementByXpath(passwordButtonID(), password);
+        sendKeysToElementByXpath(passwordButtonID, password);
     }
 
 
@@ -63,8 +55,8 @@ public class LoginPage extends Base {
      * Click on Sign in button to Login to app
      */
     public void clickOnSignInButton(){
-        clickElementByXpath(submitSignInButtonID());
-        waitForElementToBeInvisible(By.xpath(submitSignInButtonID()), 5);
+        clickElementByXpath(submitSignInButtonID);
+        waitForElementToBeInvisible(By.xpath(submitSignInButtonID), 5);
     }
 
     /**

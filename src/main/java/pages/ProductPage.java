@@ -11,23 +11,23 @@ import java.util.Set;
 
 public class ProductPage extends Base {
 
-    private static String addToCartButtonLocator(){ return "//android.widget.Button[@resource-id='add-to-cart-button']"; }
+    private static String addToCartButtonLocator = "//android.widget.Button[@resource-id='add-to-cart-button']";
 
-    protected static String viewCartButtonLocator(){ return "//android.widget.ImageView[@content-desc='Cart']"; }
+    protected static String viewCartButtonLocator = "//android.widget.ImageView[@content-desc='Cart']";
 
-    private static String proceedToBuyButtonLocator(){ return "//android.widget.Button[@text='Proceed to Buy']"; }
+    private static String proceedToBuyButtonLocator = "//android.widget.Button[@text='Proceed to Buy']";
 
-    private static String selectedProductTitleLocator(){ return "//android.view.View[@resource-id='title_feature_div']/android.view.View";}
+    private static String selectedProductTitleLocator = "//android.view.View[@resource-id='title_feature_div']/android.view.View";
 
     private static String selectedProductTitleInCartLocator(String product){ return "//android.widget.Image[contains(@text,'" + product + "')]";}
 
     private static String selectedProductPriceInCartLocator(String price){ return "//android.view.View[contains(@text,'" + price + "')]";}
 
-    private static String selectedProductQuantityInCartLocator(){ return "//android.view.View[contains(@resource-id,'quantity-label')]/android.view.View";}
+    private static String selectedProductQuantityInCartLocator = "//android.view.View[contains(@resource-id,'quantity-label')]/android.view.View";
 
-    private static String selectedProductInstallationInCartLocator(){ return "//android.view.View[contains(@text, 'TV Installation Service')]";}
+    private static String selectedProductInstallationInCartLocator = "//android.view.View[contains(@text, 'TV Installation Service')]";
 
-    private static String selectedProductInstallationPriceInCartLocator(){ return "//android.view.View[contains(@text, '0.00')]";}
+    private static String selectedProductInstallationPriceInCartLocator = "//android.view.View[contains(@text, '0.00')]";
 
 
     /**
@@ -36,8 +36,8 @@ public class ProductPage extends Base {
     public void clickOnAddToCart(){
         waitTimer(2);
         scrollToElementByText("Add to Cart");
-        waitForVisibilityOfElement(By.xpath(addToCartButtonLocator()), 5);
-        clickElementByXpath(addToCartButtonLocator());
+        waitForVisibilityOfElement(By.xpath(addToCartButtonLocator), 5);
+        clickElementByXpath(addToCartButtonLocator);
 
     }
 
@@ -45,8 +45,8 @@ public class ProductPage extends Base {
      * Click on the view cart button
      */
     public void clickToViewCart(){
-        clickElementByXpath(viewCartButtonLocator());
-        waitForVisibilityOfElement(By.xpath(proceedToBuyButtonLocator()), 15);
+        clickElementByXpath(viewCartButtonLocator);
+        waitForVisibilityOfElement(By.xpath(proceedToBuyButtonLocator), 15);
     }
 
 
@@ -56,14 +56,14 @@ public class ProductPage extends Base {
     public void clickProceedToBuy() {
         swipeInDirection("up");
         waitTimer(2);
-        clickElementByXpath(proceedToBuyButtonLocator());
+        clickElementByXpath(proceedToBuyButtonLocator);
     }
 
     /**
      * Extract the product title from product details
      */
     public String getProductTitleOnProductDetails(){
-        return findElementByXpath(selectedProductTitleLocator()).getText();
+        return findElementByXpath(selectedProductTitleLocator).getText();
     }
 
     /**
@@ -79,7 +79,7 @@ public class ProductPage extends Base {
      */
     public Set<String> pickCartQuantityValue(){
         Set<String> quantity_value = new HashSet<String>();
-        List<WebElement> quanities = findElementsByXpath(selectedProductQuantityInCartLocator());
+        List<WebElement> quanities = findElementsByXpath(selectedProductQuantityInCartLocator);
         for(WebElement quantity: quanities){
             quantity_value.add(quantity.getText());
         }
@@ -104,12 +104,12 @@ public class ProductPage extends Base {
         Assert.assertTrue( pickCartQuantityValue().contains("1"),
                 "Product quantity different added to cart");
 
-        if(waitForVisibilityOfElement(By.xpath(selectedProductInstallationInCartLocator()),5) != null) {
+        if(waitForVisibilityOfElement(By.xpath(selectedProductInstallationInCartLocator),5) != null) {
             // Verify TV Installation
-            Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductInstallationInCartLocator()), 5).isDisplayed(),
+            Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductInstallationInCartLocator), 5).isDisplayed(),
                     "Product installation not provided");
 
-            Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductInstallationPriceInCartLocator()), 5).isDisplayed(),
+            Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductInstallationPriceInCartLocator), 5).isDisplayed(),
                     "Product installation not provided");
         }
 

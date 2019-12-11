@@ -7,21 +7,21 @@ import org.testng.Assert;
 
 public class PurchasePage extends Base {
 
-    private String useThisAddressLocator(){ return "//android.widget.Button[@resource-id='a-autoid-0-announce']"; }
+    private String useThisAddressLocator = "//android.widget.Button[@resource-id='a-autoid-0-announce']";
 
-    private String preferedTimeSlotLocator(){return "//android.view.View[@text='11:30 - 1:00 PM']";}
+    private String preferedTimeSlotLocator = "//android.view.View[@text='11:30 - 1:00 PM']";
 
-    private String continueButtonLocator(){ return "//android.widget.Button[@text='Continue']"; }
+    private String continueButtonLocator = "//android.widget.Button[@text='Continue']";
 
     private String paymentOptionLocator(String option){ return "//android.view.View[@text='" + option + "']"; }
 
-    private String chooseBankOptionLocator(){ return "//android.view.View[starts-with(@resource-id,'pp-') and ends-with(@resource-id,'-96')]"; }
+    private String chooseBankOptionLocator = "//android.view.View[starts-with(@resource-id,'pp-') and ends-with(@resource-id,'-96')]";
 
     private String selectBankForNetbanking(String bank){ return "//android.view.View[@text='"+ bank +"']"; }
 
-    private String verifyButtonLocator(){ return "//android.widget.Button[@text='Verify']"; }
+    private String verifyButtonLocator = "//android.widget.Button[@text='Verify']";
 
-    private String placeYourOrderLocator(){ return "//android.widget.Button[@text='Place Your Order and Pay']"; }
+    private String placeYourOrderLocator = "//android.widget.Button[@text='Place Your Order and Pay']";
 
 
     /**
@@ -29,7 +29,7 @@ public class PurchasePage extends Base {
      */
     public void clickUseThisAddress(){
         waitTimer(2);
-        clickElementByXpath(useThisAddressLocator());
+        clickElementByXpath(useThisAddressLocator);
         waitTimer(2);
     }
 
@@ -37,7 +37,7 @@ public class PurchasePage extends Base {
      * Assert the user is on Place order and pay page
      */
     public void verifyUserOnPlaceOrder(){
-        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(placeYourOrderLocator()), 10).isDisplayed(),
+        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(placeYourOrderLocator), 10).isDisplayed(),
                 "Assertion Failed! Payment option not shown");
         System.out.println("Order placed successfully!!");
     }
@@ -47,7 +47,7 @@ public class PurchasePage extends Base {
      */
     public void clickOnContinueButton(){
         scrollToElementByText("Continue");
-        clickElementByXpath(continueButtonLocator());
+        clickElementByXpath(continueButtonLocator);
     }
 
     /**
@@ -55,7 +55,7 @@ public class PurchasePage extends Base {
      */
     public void selectPreferedTimeSlot(){
         clickOnContinueButton();
-        clickElementByXpath(preferedTimeSlotLocator());
+        clickElementByXpath(preferedTimeSlotLocator);
         clickOnContinueButton();
     }
 
@@ -72,7 +72,7 @@ public class PurchasePage extends Base {
      * @param bank - Bank to be used for netbanking
      */
     public void selectNetBankingOption(String bank){
-        clickElementByXpath(chooseBankOptionLocator());
+        clickElementByXpath(chooseBankOptionLocator);
         clickElementByXpath(selectBankForNetbanking(bank));
     }
 
@@ -82,7 +82,7 @@ public class PurchasePage extends Base {
      */
     public void selectUPI(String vpa_value){
         sendKeysToElementByXpath("", vpa_value);
-        clickElementByXpath(verifyButtonLocator());
+        clickElementByXpath(verifyButtonLocator);
     }
 
     /**

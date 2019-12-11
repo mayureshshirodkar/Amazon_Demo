@@ -11,24 +11,24 @@ public class HomePage extends Base {
 
     private ProductPage product_page = new ProductPage();
 
-    private String saveLanguageChangeLocator(){ return "//android.widget.Button[@text='Save Changes']";}
+    private String saveLanguageChangeLocator = "//android.widget.Button[@text='Save Changes']";
 
-    private String languageRadioLocator(){ return "//*[@text='English - EN']";}
+    private String languageRadioLocator = "//*[@text='English - EN']";
 
-    private String homeButtonLocator(){ return "//android.widget.ImageView[@content-desc='Home']";}
+    private String homeButtonLocator = "//android.widget.ImageView[@content-desc='Home']";
 
-    private String deleteProductLocator(){ return "//android.widget.Button[@text='Delete']";}
+    private String deleteProductLocator = "//android.widget.Button[@text='Delete']";
 
-    private String emptyCartMessageLocator(){ return "//android.view.View[contains(@text,'Your Shopping Cart is empty.')]";}
+    private String emptyCartMessageLocator = "//android.view.View[contains(@text,'Your Shopping Cart is empty.')]";
 
 
     /**
      * Accept the app language selection popup
      */
     public void acceptLanguagePopup(){
-        if(waitForVisibilityOfElement(By.xpath(languageRadioLocator()), 15) != null) {
-            clickElementByXpath(languageRadioLocator());
-            clickElementByXpath(saveLanguageChangeLocator());
+        if(waitForVisibilityOfElement(By.xpath(languageRadioLocator), 15) != null) {
+            clickElementByXpath(languageRadioLocator);
+            clickElementByXpath(saveLanguageChangeLocator);
         }
     }
 
@@ -36,7 +36,7 @@ public class HomePage extends Base {
      * Tap on home and Navigate to Home page
      */
     public void navigateToHome(){
-        clickElementByXpath(homeButtonLocator());
+        clickElementByXpath(homeButtonLocator);
     }
 
 
@@ -46,11 +46,11 @@ public class HomePage extends Base {
     public void deleteProductsAddedToCart(){
         product_page.clickToViewCart();
         swipeInDirection("down");
-        List<WebElement> products = findElementsByXpath(deleteProductLocator());
+        List<WebElement> products = findElementsByXpath(deleteProductLocator);
         for(WebElement product:products){
             product.click();
         }
-        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emptyCartMessageLocator()), 10).isDisplayed(),
+        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emptyCartMessageLocator), 10).isDisplayed(),
                 "Assertion Failed! Payment option not shown");
         System.out.println("Products removed from cart!!");
     }
