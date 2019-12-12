@@ -6,7 +6,8 @@
             <class name="amazon.config.Config" />
             <class name="PurchaseScenario" />
                 <methods preserve-order="true">
-                    <include name="AmazonLogin"/>
+                    <include name="AmazonIncorrectLogin"/>
+                    <include name="AmazonCorrectLogin"/>
                     <include name="AmazonSearchItem"/>
                     <include name="AmazonProductDetails"/>
                     <include name="AmazonProceedToCheckOut"/>

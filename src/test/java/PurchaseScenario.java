@@ -1,5 +1,6 @@
 import amazon.base.Base;
 import amazon.pages.*;
+import amazon.utilities.Report;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -8,23 +9,40 @@ import amazon.utilities.Utils;
 import java.lang.reflect.Method;
 
 public class PurchaseScenario {
-    private LoginPage login = new LoginPage();
     private Base base =new Base();
+    private LoginPage login = new LoginPage();
     private SearchPage search = new SearchPage();
     private ProductPage product = new ProductPage();
     private HomePage home = new HomePage();
     private PurchasePage purchase = new PurchasePage();
+
     private String searchProductTitle;
     private String searchProductPrice;
     private String test_name;
 
 
-    @Test(description = "Existing customer logs in to the app")
-    public void AmazonLogin(Method method_name){
+    @Test(description = "Existing customer logs in to the app - (False Scenario)")
+    public void AmazonIncorrectLogin(Method method_name){
         test_name = method_name.getName();
+        Report.createExtentTest(test_name);
         String user = Utils.getValue(test_name, "username");
         String password = Utils.getValue(test_name, "password");
 
+        login.clickOnAlreadyCustomer();
+        login.enterUserName(user);
+        login.enterLoginPassword(password);
+        login.clickOnSignInButton();
+        login.verifySuccessfulLogin();
+    }
+
+    @Test(description = "Existing customer logs in to the app")
+    public void AmazonCorrectLogin(Method method_name){
+        test_name = method_name.getName();
+        Report.createExtentTest(test_name);
+        String user = Utils.getValue(test_name, "username");
+        String password = Utils.getValue(test_name, "password");
+
+        base.relaunchApp();
         login.clickOnAlreadyCustomer();
         login.enterUserName(user);
         login.enterLoginPassword(password);
@@ -74,10 +92,10 @@ public class PurchaseScenario {
 
     @AfterMethod
     public void takeScreenShotOnFailure(ITestResult testResult){
-        if (testResult.getStatus() == ITestResult.FAILURE) {
-            System.out.println(testResult.getStatus());
-            base.takeScreenshot(testResult);
-        }
+        Report.flushExtentTest();
+//        if (testResult.getStatus() == ITestResult.FAILURE) {
+//            base.takeScreenshot(testResult);
+//        }
     }
 
 }

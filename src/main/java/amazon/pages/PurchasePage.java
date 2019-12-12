@@ -36,7 +36,7 @@ public class PurchasePage extends Base {
         waitTimer(2);
         clickElementByXpath(useThisAddressLocator);
         waitTimer(2);
-        Utils.debugLog(purchasePageLogger, "Clicked on use this address button");
+        Utils.infoLog(purchasePageLogger, "Clicked on use this address button");
     }
 
     /**
@@ -45,7 +45,7 @@ public class PurchasePage extends Base {
     public void verifyUserOnPlaceOrder(){
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(placeYourOrderLocator), 10).isDisplayed(),
                 "Assertion Failed! Payment option not shown");
-        Utils.debugLog(purchasePageLogger, "Order placed successfully!!");
+        Utils.infoLog(purchasePageLogger, "Order placed successfully!!");
     }
 
     /**
@@ -110,7 +110,7 @@ public class PurchasePage extends Base {
             selectUPI(payment_method_detail);
 
         clickOnContinueButton();
-        Utils.debugLog(purchasePageLogger, "Selected payment option");
+        Utils.infoLog(purchasePageLogger, "Selected payment option");
 
     }
 

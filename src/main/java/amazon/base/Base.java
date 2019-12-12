@@ -1,14 +1,20 @@
 package amazon.base;
 
 import amazon.config.Config;
+import amazon.pages.LoginPage;
+import amazon.utilities.Report;
+import amazon.utilities.Utils;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.ITestResult;
 
 import java.io.File;
@@ -16,6 +22,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class Base extends Config {
+
+    private static Logger baseLogger = LogManager.getLogger(LoginPage.class);
 
 
     /**
@@ -27,7 +35,7 @@ public class Base extends Config {
         try {
             return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.visibilityOfElementLocated(by));
         } catch (Exception e) {
-            e.printStackTrace();
+            Utils.debugLog(baseLogger,"Error while waiting for visibility of element- \n" + e.getMessage());
         }
         return null;
     }
@@ -42,6 +50,7 @@ public class Base extends Config {
         try {
              return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.invisibilityOfElementLocated(by));
         } catch (Exception e) {
+            Utils.debugLog(baseLogger,"Error while waiting for invisibility of element- \n" + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -57,6 +66,7 @@ public class Base extends Config {
         try {
             return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
         } catch (Exception e) {
+            Utils.debugLog(baseLogger,"Error while waiting for presence of element- \n" + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -135,7 +145,13 @@ public class Base extends Config {
      * @param text text for element
      */
     protected void scrollToElementByText(String text){
-        getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\").instance(0));"));
+        try {
+            getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\").instance(0));"));
+        }
+        catch(Exception e){
+            Utils.debugLog(baseLogger,"Error while scrolling to element- \n" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -216,16 +232,35 @@ public class Base extends Config {
     /**
      * Reset the state of the app
      */
-    protected void relaunchApp() { getDriver().resetApp(); }
+    public void relaunchApp() { getDriver().resetApp(); }
 
 
-    public void takeScreenshot(ITestResult testResult) {
+    public String takeScreenshot() {
+        String path = "";
         try {
             File scrFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(scrFile, new File("./screenshots/" + testResult.getName() + "-" + ".jpg"));
+
+            path = System.getProperty("user.dir")+"/screenshots/"+System.currentTimeMillis()+".png";
+
+            FileUtils.copyFile(scrFile, new File(path));
+
         } catch (IOException io) {
-            io.printStackTrace();
+            Utils.debugLog(baseLogger,"Error Taking Screenshot - \n" + io.getMessage());
         }
+        return path;
     }
+
+
+    public void assertIfTrue(String xpath, String verify_msg) {
+
+        if(waitForVisibilityOfElement(By.xpath(xpath), 5) != null) {
+            Report.logStatusPass(verify_msg);
+        }
+        else{
+            String temp = takeScreenshot();
+            Report.logStatusFail(verify_msg, temp);
+            Assert.fail("Assertion Failed!");
+            }
+        }
 
 }

@@ -33,10 +33,10 @@ public class HomePage extends Base {
         if(waitForVisibilityOfElement(By.xpath(languageRadioLocator), 15) != null) {
             clickElementByXpath(languageRadioLocator);
             clickElementByXpath(saveLanguageChangeLocator);
-            Utils.debugLog(homePageLogger, "Language Popup Accepted");
+            Utils.infoLog(homePageLogger, "Language Popup Accepted");
         }
         else{
-            Utils.debugLog(homePageLogger, "No Language Popup Displayed");
+            Utils.infoLog(homePageLogger, "No Language Popup Displayed");
         }
     }
 
@@ -45,7 +45,7 @@ public class HomePage extends Base {
      */
     public void navigateToHome(){
         clickElementByXpath(homeButtonLocator);
-        Utils.debugLog(homePageLogger, "Navigate to Home page");
+        Utils.infoLog(homePageLogger, "Navigate to Home page");
     }
 
 
@@ -62,7 +62,7 @@ public class HomePage extends Base {
         }
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emptyCartMessageLocator), 10).isDisplayed(),
                 "Assertion Failed! Payment option not shown");
-        Utils.debugLog(homePageLogger, "Products removed from cart!!");
+        Utils.infoLog(homePageLogger, "Products removed from cart!!");
     }
 
 }

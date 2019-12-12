@@ -14,9 +14,12 @@ public class Utils{
 
     private static Map<String,String> parameters =new HashMap<String, String>();
     private static Map<String,Map> excel_data =new HashMap<String, Map>();
+
     private static XSSFWorkbook wb;
     private static XSSFSheet sheet;
+
     private static Logger utilsLogger = LogManager.getLogger(Utils.class);
+
 
 
     /**
@@ -55,7 +58,7 @@ public class Utils{
                 String value = properties.getProperty(key);
                 parameters.put(key.toLowerCase(), value);
             }
-            debugLog(utilsLogger,"Read "+filename+" successfully");
+            infoLog(utilsLogger,"Read "+filename+" successfully");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -73,7 +76,7 @@ public class Utils{
             runCommand.waitFor();
             BufferedReader reader = new BufferedReader(new InputStreamReader(runCommand.getInputStream()));
             line  = reader.readLine();
-            debugLog(utilsLogger,"Extracted Android version via bash command");
+            infoLog(utilsLogger,"Extracted Android version via bash command");
             return line;
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,6 +169,10 @@ public class Utils{
         row = row +1;
 
         return row;
+    }
+
+    public static void infoLog(Logger log, String message){
+        log.info(message);
     }
 
     public static void debugLog(Logger log, String message){

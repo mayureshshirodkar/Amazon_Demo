@@ -1,5 +1,6 @@
 package amazon.config;
 
+import amazon.utilities.Report;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import amazon.utilities.Utils;
@@ -23,7 +24,7 @@ public class Config {
      * @return DesiredCapabilities
      */
     private DesiredCapabilities androidCapabilities(){
-        Utils.debugLog(configLogger,"Setting Android Desired Capabilities");
+        Utils.infoLog(configLogger,"Setting Android Desired Capabilities");
         DesiredCapabilities androidCapabilities = new DesiredCapabilities();
         androidCapabilities.setCapability("deviceName", Utils.getValueForParam("android_device"));
         androidCapabilities.setCapability("automationName", Utils.getValueForParam("automation_type"));
@@ -46,9 +47,11 @@ public class Config {
         try {
             Utils.readEntirePropertyFile(working_directory + "/test_data/configuration.properties");
             Utils.readExcelFileToMap(working_directory + "/test_data/TestData.xlsx");
+            Report.initializeExtentReport(working_directory + "/reports/report_"+ System.currentTimeMillis() +".html");
+
             if(driver==null)
                 driver = new AndroidDriver(new URL(Utils.getValueForParam("url_android")), androidCapabilities());
-            Utils.debugLog(configLogger,"Driver Initialised!!");
+            Utils.infoLog(configLogger,"Driver Initialised!!");
         }
         catch(MalformedURLException e){
             System.out.println("Url exception while defining the driver: \n");
@@ -64,7 +67,7 @@ public class Config {
     public void quit() {
         try {
             getDriver().quit();
-            Utils.debugLog(configLogger,"WebDriver Session Quit!!");
+            Utils.infoLog(configLogger,"WebDriver Session Quit!!");
         }
         catch(Exception e){
             e.printStackTrace();

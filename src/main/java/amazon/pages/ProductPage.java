@@ -43,7 +43,7 @@ public class ProductPage extends Base {
         scrollToElementByText("Add to Cart");
         waitForVisibilityOfElement(By.xpath(addToCartButtonLocator), 5);
         clickElementByXpath(addToCartButtonLocator);
-        Utils.debugLog(productPageLogger, "Clicked on add to cart");
+        Utils.infoLog(productPageLogger, "Clicked on add to cart");
 
     }
 
@@ -53,7 +53,7 @@ public class ProductPage extends Base {
     public void clickToViewCart(){
         clickElementByXpath(viewCartButtonLocator);
         waitForVisibilityOfElement(By.xpath(proceedToBuyButtonLocator), 15);
-        Utils.debugLog(productPageLogger, "Clicked on view cart");
+        Utils.infoLog(productPageLogger, "Clicked on view cart");
     }
 
 
@@ -64,7 +64,7 @@ public class ProductPage extends Base {
         swipeInDirection("up");
         waitTimer(2);
         clickElementByXpath(proceedToBuyButtonLocator);
-        Utils.debugLog(productPageLogger, "Clicked on proceed to buy");
+        Utils.infoLog(productPageLogger, "Clicked on proceed to buy");
     }
 
     /**
@@ -79,7 +79,7 @@ public class ProductPage extends Base {
      */
     public void verifyCorrectProductSelected(String product){
         Assert.assertEquals(product, getProductTitleOnProductDetails(), "Product title different from searched product");
-        Utils.debugLog(productPageLogger, "Correct product selected and displayed!!");
+        Utils.infoLog(productPageLogger, "Correct product selected and displayed!!");
     }
 
     /**
@@ -121,7 +121,7 @@ public class ProductPage extends Base {
                     "Product installation not provided");
         }
 
-        Utils.debugLog(productPageLogger, "Cart details verified!!");
+        Utils.infoLog(productPageLogger, "Cart details verified!!");
     }
 
 }
