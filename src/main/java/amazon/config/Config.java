@@ -1,6 +1,8 @@
-package config;
+package amazon.config;
 
-import utilities.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import amazon.utilities.Utils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -14,13 +16,14 @@ public class Config {
 
     static private AppiumDriver driver=null;
     private String working_directory = System.getProperty("user.dir");
+    private static Logger configLogger = LogManager.getLogger(Config.class);
 
     /**
      * Defines Android Capabilities
      * @return DesiredCapabilities
      */
     private DesiredCapabilities androidCapabilities(){
-        System.out.println("Setting Android Desired Capabilities");
+        Utils.debugLog(configLogger,"Setting Android Desired Capabilities");
         DesiredCapabilities androidCapabilities = new DesiredCapabilities();
         androidCapabilities.setCapability("deviceName", Utils.getValueForParam("android_device"));
         androidCapabilities.setCapability("automationName", Utils.getValueForParam("automation_type"));
@@ -42,9 +45,10 @@ public class Config {
     public void initialize(){
         try {
             Utils.readEntirePropertyFile(working_directory + "/test_data/configuration.properties");
+            Utils.readExcelFileToMap(working_directory + "/test_data/TestData.xlsx");
             if(driver==null)
                 driver = new AndroidDriver(new URL(Utils.getValueForParam("url_android")), androidCapabilities());
-                System.out.println("Driver Initialised!!");
+            Utils.debugLog(configLogger,"Driver Initialised!!");
         }
         catch(MalformedURLException e){
             System.out.println("Url exception while defining the driver: \n");
@@ -60,7 +64,7 @@ public class Config {
     public void quit() {
         try {
             getDriver().quit();
-            System.out.println("WebDriver Session Quit!!");
+            Utils.debugLog(configLogger,"WebDriver Session Quit!!");
         }
         catch(Exception e){
             e.printStackTrace();

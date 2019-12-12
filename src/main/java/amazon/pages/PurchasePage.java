@@ -1,27 +1,32 @@
-package pages;
+package amazon.pages;
 
-import base.Base;
+import amazon.base.Base;
+import amazon.utilities.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
 
 public class PurchasePage extends Base {
 
-    private String useThisAddressLocator = "//android.widget.Button[@resource-id='a-autoid-0-announce']";
+    private String useThisAddressLocator = "//*[@resource-id='a-autoid-0-announce']";
 
-    private String preferedTimeSlotLocator = "//android.view.View[@text='11:30 - 1:00 PM']";
+    private String preferedTimeSlotLocator = "//*[@text='11:30 - 1:00 PM']";
 
-    private String continueButtonLocator = "//android.widget.Button[@text='Continue']";
+    private String continueButtonLocator = "//*[@text='Continue']";
 
     private String paymentOptionLocator(String option){ return "//android.view.View[@text='" + option + "']"; }
 
-    private String chooseBankOptionLocator = "//android.view.View[starts-with(@resource-id,'pp-') and ends-with(@resource-id,'-96')]";
+    private String chooseBankOptionLocator = "//*[starts-with(@resource-id,'pp-') and ends-with(@resource-id,'-96')]";
 
     private String selectBankForNetbanking(String bank){ return "//android.view.View[@text='"+ bank +"']"; }
 
-    private String verifyButtonLocator = "//android.widget.Button[@text='Verify']";
+    private String verifyButtonLocator = "//*[@text='Verify']";
 
-    private String placeYourOrderLocator = "//android.widget.Button[@text='Place Your Order and Pay']";
+    private String placeYourOrderLocator = "//*[@text='Place Your Order and Pay']";
+
+    private static Logger purchasePageLogger = LogManager.getLogger(PurchasePage.class);
 
 
     /**
@@ -31,6 +36,7 @@ public class PurchasePage extends Base {
         waitTimer(2);
         clickElementByXpath(useThisAddressLocator);
         waitTimer(2);
+        Utils.debugLog(purchasePageLogger, "Clicked on use this address button");
     }
 
     /**
@@ -39,7 +45,7 @@ public class PurchasePage extends Base {
     public void verifyUserOnPlaceOrder(){
         Assert.assertTrue(waitForVisibilityOfElement(By.xpath(placeYourOrderLocator), 10).isDisplayed(),
                 "Assertion Failed! Payment option not shown");
-        System.out.println("Order placed successfully!!");
+        Utils.debugLog(purchasePageLogger, "Order placed successfully!!");
     }
 
     /**
@@ -104,6 +110,7 @@ public class PurchasePage extends Base {
             selectUPI(payment_method_detail);
 
         clickOnContinueButton();
+        Utils.debugLog(purchasePageLogger, "Selected payment option");
 
     }
 

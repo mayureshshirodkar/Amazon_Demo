@@ -1,6 +1,9 @@
-package pages;
+package amazon.pages;
 
-import base.Base;
+import amazon.base.Base;
+import amazon.utilities.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -11,11 +14,11 @@ import java.util.Set;
 
 public class ProductPage extends Base {
 
-    private static String addToCartButtonLocator = "//android.widget.Button[@resource-id='add-to-cart-button']";
+    private static String addToCartButtonLocator = "//*[@resource-id='add-to-cart-button']";
 
-    protected static String viewCartButtonLocator = "//android.widget.ImageView[@content-desc='Cart']";
+    protected static String viewCartButtonLocator = "//*[@content-desc='Cart']";
 
-    private static String proceedToBuyButtonLocator = "//android.widget.Button[@text='Proceed to Buy']";
+    private static String proceedToBuyButtonLocator = "//*[@text='Proceed to Buy']";
 
     private static String selectedProductTitleLocator = "//android.view.View[@resource-id='title_feature_div']/android.view.View";
 
@@ -23,11 +26,13 @@ public class ProductPage extends Base {
 
     private static String selectedProductPriceInCartLocator(String price){ return "//android.view.View[contains(@text,'" + price + "')]";}
 
-    private static String selectedProductQuantityInCartLocator = "//android.view.View[contains(@resource-id,'quantity-label')]/android.view.View";
+    private static String selectedProductQuantityInCartLocator = "//*[contains(@resource-id,'quantity-label')]/android.view.View";
 
-    private static String selectedProductInstallationInCartLocator = "//android.view.View[contains(@text, 'TV Installation Service')]";
+    private static String selectedProductInstallationInCartLocator = "//*[contains(@text, 'TV Installation Service')]";
 
-    private static String selectedProductInstallationPriceInCartLocator = "//android.view.View[contains(@text, '0.00')]";
+    private static String selectedProductInstallationPriceInCartLocator = "//*[contains(@text, '0.00')]";
+
+    private static Logger productPageLogger = LogManager.getLogger(ProductPage.class);
 
 
     /**
@@ -38,6 +43,7 @@ public class ProductPage extends Base {
         scrollToElementByText("Add to Cart");
         waitForVisibilityOfElement(By.xpath(addToCartButtonLocator), 5);
         clickElementByXpath(addToCartButtonLocator);
+        Utils.debugLog(productPageLogger, "Clicked on add to cart");
 
     }
 
@@ -47,6 +53,7 @@ public class ProductPage extends Base {
     public void clickToViewCart(){
         clickElementByXpath(viewCartButtonLocator);
         waitForVisibilityOfElement(By.xpath(proceedToBuyButtonLocator), 15);
+        Utils.debugLog(productPageLogger, "Clicked on view cart");
     }
 
 
@@ -57,6 +64,7 @@ public class ProductPage extends Base {
         swipeInDirection("up");
         waitTimer(2);
         clickElementByXpath(proceedToBuyButtonLocator);
+        Utils.debugLog(productPageLogger, "Clicked on proceed to buy");
     }
 
     /**
@@ -71,7 +79,7 @@ public class ProductPage extends Base {
      */
     public void verifyCorrectProductSelected(String product){
         Assert.assertEquals(product, getProductTitleOnProductDetails(), "Product title different from searched product");
-        System.out.println("Correct product selected and displayed!!");
+        Utils.debugLog(productPageLogger, "Correct product selected and displayed!!");
     }
 
     /**
@@ -113,7 +121,7 @@ public class ProductPage extends Base {
                     "Product installation not provided");
         }
 
-        System.out.println("Cart details verified!!");
+        Utils.debugLog(productPageLogger, "Cart details verified!!");
     }
 
 }

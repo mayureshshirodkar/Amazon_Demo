@@ -3,7 +3,7 @@
 <suite name="Amazon_Test">
     <test name="Amazon_Product_Purchase" preserve-order="true">
         <classes>
-            <class name="config.Config" />
+            <class name="amazon.config.Config" />
             <class name="PurchaseScenario" />
                 <methods preserve-order="true">
                     <include name="AmazonLogin"/>

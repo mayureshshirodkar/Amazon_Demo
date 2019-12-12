@@ -1,6 +1,6 @@
-package pages;
+package amazon.pages;
 
-import base.Base;
+import amazon.base.Base;
 import org.openqa.selenium.WebElement;
 import java.util.List;
 

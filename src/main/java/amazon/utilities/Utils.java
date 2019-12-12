@@ -1,20 +1,22 @@
-package utilities;
+package amazon.utilities;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.*;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
-public class Utils {
+public class Utils{
 
 
     private static Map<String,String> parameters =new HashMap<String, String>();
+    private static Map<String,Map> excel_data =new HashMap<String, Map>();
     private static XSSFWorkbook wb;
     private static XSSFSheet sheet;
+    private static Logger utilsLogger = LogManager.getLogger(Utils.class);
 
 
     /**
@@ -31,6 +33,7 @@ public class Utils {
         else
             return "";
     }
+
 
 
     /**
@@ -52,7 +55,7 @@ public class Utils {
                 String value = properties.getProperty(key);
                 parameters.put(key.toLowerCase(), value);
             }
-            System.out.println("Reading "+filename);
+            debugLog(utilsLogger,"Read "+filename+" successfully");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -70,7 +73,7 @@ public class Utils {
             runCommand.waitFor();
             BufferedReader reader = new BufferedReader(new InputStreamReader(runCommand.getInputStream()));
             line  = reader.readLine();
-            System.out.println("Done!");
+            debugLog(utilsLogger,"Extracted Android version via bash command");
             return line;
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,26 +99,80 @@ public class Utils {
         return androidVersion;
     }
 
+
     /**
-     * Read excel file into 2D array
+     * Read excel file into HashMap
      * @param filename excel file to be extracted
      */
-    public static Object[][] readExcelFile(String filename) throws IOException {
-            FileInputStream fileInput = new FileInputStream(new File(filename));
+    public static Map<String,Map> readExcelFileToMap(String filename){
+        try {
+            String key;
+            Map<String,String> val;
+            FileInputStream fileInput;
+
+            fileInput = new FileInputStream(new File(filename));
             wb = new XSSFWorkbook(fileInput);
+            int row_count = getRowCount(0);
 
-            sheet = wb.getSheetAt(0);
+            for (int i = 1; i < row_count; i++) {
+                key = "";
+                val = new HashMap<String, String>();
 
-            int row_count = sheet.getLastRowNum();
-            Object[][] data = new Object[row_count][2];
-
-            for (int i = 0; i < row_count; i++) {
-                data[i][0] = sheet.getRow(i).getCell(0).getStringCellValue();
-                data[0][i] = sheet.getRow(i).getCell(0).getStringCellValue();
+                for (int j = 0; j < 5; j++) {
+                    if (j == 0)
+                        key = getData(0, i, j);
+                    else
+                        val.put(getData(0, 0, j),getData(0, i, j));
+                }
+                excel_data.put(key, val);
             }
+        }
+        catch (IOException io){
+            io.printStackTrace();
+        }
 
-        return data;
+        return excel_data;
     }
+
+    /**
+     * Will read the specified parameter from the local data structure which
+     * is loaded by readExcelFileToMap function
+     *
+     * @param param - parameter name to read from the map
+     * @param field - field name to read from the map
+     * @return  returns the value of the parameter
+     */
+    public static String getValue(String param, String field)
+    {
+        if(excel_data.containsKey(param))
+            return excel_data.get(param).get(field).toString();
+        else
+            return "";
+    }
+
+
+
+    public static String getData(int sheetIndex, int row, int column){
+        sheet = wb.getSheetAt(sheetIndex);
+        Cell c = sheet.getRow(row).getCell(column);
+        c.setCellType(CellType.STRING);
+        return c.getStringCellValue();
+    }
+
+
+    public static int getRowCount(int sheetIndex){
+        int row = wb.getSheetAt(sheetIndex).getLastRowNum();
+
+        row = row +1;
+
+        return row;
+    }
+
+    public static void debugLog(Logger log, String message){
+        log.debug(message);
+    }
+
+
 
 
 
