@@ -24,7 +24,7 @@ public class PurchasePage extends Base {
 
     private String paymentOptionLocator(String option){ return "//android.view.View[@text='" + option + "']"; }
 
-    private String selectBankForNetbanking(String bank){ return "//android.view.View[@text='"+ bank +"']"; }
+    private String selectBankForNetBanking(String bank){ return "//android.view.View[@text='"+ bank +"']"; }
 
 
     /**
@@ -54,7 +54,7 @@ public class PurchasePage extends Base {
     /**
      * Click on the prefered time slot
      */
-    public void selectPreferedTimeSlot(){
+    public void selectPreferredTimeSlot(){
         clickOnContinueButton();
         clickElementByXpath(preferredTimeSlotLocator, purchasePageLogger, "User clicks on prefered time button");
         clickOnContinueButton();
@@ -74,7 +74,7 @@ public class PurchasePage extends Base {
      */
     public void selectNetBankingOption(String bank){
         clickElementByXpath(chooseBankOptionLocator, purchasePageLogger, "User clicks on bank option button");
-        clickElementByXpath(selectBankForNetbanking(bank), purchasePageLogger, "User clicks on netbanking option button");
+        clickElementByXpath(selectBankForNetBanking(bank), purchasePageLogger, "User clicks on netbanking option button");
     }
 
     /**

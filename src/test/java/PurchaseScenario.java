@@ -74,7 +74,7 @@ public class PurchaseScenario {
         String payment_details = Utils.getValue(test_name, "payment mode");
 
         purchase.clickUseThisAddress();
-        purchase.selectPreferedTimeSlot();
+        purchase.selectPreferredTimeSlot();
         purchase.selectPaymentAndProceed(payment_details);
         purchase.verifyUserOnPlaceOrder();
     }
