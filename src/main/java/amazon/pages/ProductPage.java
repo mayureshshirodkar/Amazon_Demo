@@ -42,8 +42,7 @@ public class ProductPage extends Base {
         waitTimer(2);
         scrollToElementByText("Add to Cart");
         waitForVisibilityOfElement(By.xpath(addToCartButtonLocator), 5);
-        clickElementByXpath(addToCartButtonLocator);
-        Utils.infoLog(productPageLogger, "Clicked on add to cart");
+        clickElementByXpath(addToCartButtonLocator, productPageLogger, "User clicks on add to cart button");
 
     }
 
@@ -51,9 +50,9 @@ public class ProductPage extends Base {
      * Click on the view cart button
      */
     public void clickToViewCart(){
-        clickElementByXpath(viewCartButtonLocator);
+        clickElementByXpath(viewCartButtonLocator, productPageLogger, "User clicks on view cart button");
         waitForVisibilityOfElement(By.xpath(proceedToBuyButtonLocator), 15);
-        Utils.infoLog(productPageLogger, "Clicked on view cart");
+
     }
 
 
@@ -63,8 +62,7 @@ public class ProductPage extends Base {
     public void clickProceedToBuy() {
         swipeInDirection("up");
         waitTimer(2);
-        clickElementByXpath(proceedToBuyButtonLocator);
-        Utils.infoLog(productPageLogger, "Clicked on proceed to buy");
+        clickElementByXpath(proceedToBuyButtonLocator, productPageLogger, "User clicks on proceed to buy button");
     }
 
     /**
@@ -78,8 +76,7 @@ public class ProductPage extends Base {
      * Assert to verify correct product is selected
      */
     public void verifyCorrectProductSelected(String product){
-        Assert.assertEquals(product, getProductTitleOnProductDetails(), "Product title different from searched product");
-        Utils.infoLog(productPageLogger, "Correct product selected and displayed!!");
+        assertIfEqual(product, getProductTitleOnProductDetails(), "Assert if product title is correct");
     }
 
     /**
@@ -103,22 +100,17 @@ public class ProductPage extends Base {
         swipeInDirection("down");
 
         // Verify Product added to Cart
-        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductTitleInCartLocator(product)), 5).isDisplayed(),
-                "Product title different from product added to cart");
+        assertIfTrue(selectedProductTitleInCartLocator(product), "Assert if product title is same as search product title");
 
-        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductPriceInCartLocator(price)), 5).isDisplayed(),
-                "Product price different from product added to cart");
+        assertIfTrue(selectedProductPriceInCartLocator(price),"Assert if product price is same as search product price");
 
-        Assert.assertTrue( pickCartQuantityValue().contains("1"),
-                "Product quantity different added to cart");
+        Assert.assertTrue( pickCartQuantityValue().contains("1"),"Product quantity different added to cart");
 
         if(waitForVisibilityOfElement(By.xpath(selectedProductInstallationInCartLocator),5) != null) {
             // Verify TV Installation
-            Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductInstallationInCartLocator), 5).isDisplayed(),
-                    "Product installation not provided");
+            assertIfTrue(selectedProductInstallationInCartLocator,"Assert if product installation title is valid");
 
-            Assert.assertTrue(waitForVisibilityOfElement(By.xpath(selectedProductInstallationPriceInCartLocator), 5).isDisplayed(),
-                    "Product installation not provided");
+            assertIfTrue(selectedProductInstallationPriceInCartLocator,"Assert if product installation price is valid");
         }
 
         Utils.infoLog(productPageLogger, "Cart details verified!!");

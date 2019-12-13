@@ -1,5 +1,6 @@
 package amazon.utilities;
 
+import amazon.base.Base;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,7 +25,7 @@ public class Utils{
 
     /**
      * Will read the specified parameter from the local data structure which
-     * is loaded by readEntirePropertyFile function
+     * is loaded by readPropertyFileToMap function
      *
      * @param param - parameter name to read from the file
      * @return  returns the value of the parameter
@@ -45,7 +46,7 @@ public class Utils{
      *
      * @param filename - name of the file to read
      */
-    public static void readEntirePropertyFile(String filename)
+    public static void readPropertyFileToMap(String filename)
     {
         try {
             FileInputStream fileInput = new FileInputStream(new File(filename));
@@ -177,6 +178,16 @@ public class Utils{
 
     public static void debugLog(Logger log, String message){
         log.debug(message);
+    }
+
+    public static void passStep(Logger log, String message){
+        infoLog(log, message);
+        Report.logStatusPass(message);
+    }
+
+    public static void failStep(Logger log, String message, String temp, String error_message){
+        debugLog(log, error_message);
+        Report.logStatusFail(message, temp);
     }
 
 

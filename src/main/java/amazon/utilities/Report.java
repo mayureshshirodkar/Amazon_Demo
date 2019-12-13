@@ -8,6 +8,7 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Report {
@@ -24,6 +25,8 @@ public class Report {
         extent = new ExtentReports();
         extent.attachReporter(reporter);
         Utils.infoLog(reportLogger,"Extent Reports Initialised!!");
+        // allow automatic saving of media files relative to the report
+        reporter.config().setAutoCreateRelativePathMedia(true);
     }
 
 
@@ -37,7 +40,8 @@ public class Report {
 
     public static void logStatusFail(String text, String temp){
         try {
-            logger.fail(text, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
+            logger.log(Status.FAIL, text, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
+            new File(temp).delete();
         }
         catch (IOException io){
             io.printStackTrace();

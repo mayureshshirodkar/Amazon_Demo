@@ -4,8 +4,6 @@ import amazon.base.Base;
 import amazon.utilities.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.testng.Assert;
 
 
 public class PurchasePage extends Base {
@@ -34,18 +32,15 @@ public class PurchasePage extends Base {
      */
     public void clickUseThisAddress(){
         waitTimer(2);
-        clickElementByXpath(useThisAddressLocator);
+        clickElementByXpath(useThisAddressLocator, purchasePageLogger, "User clicks on use this address button");
         waitTimer(2);
-        Utils.infoLog(purchasePageLogger, "Clicked on use this address button");
     }
 
     /**
      * Assert the user is on Place order and pay page
      */
     public void verifyUserOnPlaceOrder(){
-        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(placeYourOrderLocator), 10).isDisplayed(),
-                "Assertion Failed! Payment option not shown");
-        Utils.infoLog(purchasePageLogger, "Order placed successfully!!");
+        assertIfTrue(placeYourOrderLocator, "Assert if user is on place order page");
     }
 
     /**
@@ -53,7 +48,7 @@ public class PurchasePage extends Base {
      */
     public void clickOnContinueButton(){
         scrollToElementByText("Continue");
-        clickElementByXpath(continueButtonLocator);
+        clickElementByXpath(continueButtonLocator, purchasePageLogger, "User clicks on continue button");
     }
 
     /**
@@ -61,8 +56,9 @@ public class PurchasePage extends Base {
      */
     public void selectPreferedTimeSlot(){
         clickOnContinueButton();
-        clickElementByXpath(preferedTimeSlotLocator);
+        clickElementByXpath(preferedTimeSlotLocator, purchasePageLogger, "User clicks on prefered time button");
         clickOnContinueButton();
+        Utils.passStep(purchasePageLogger, "User selects prefered time slot");
     }
 
     /**
@@ -70,7 +66,7 @@ public class PurchasePage extends Base {
      */
     public void clickOnPaymentOption(String option){
         scrollToElementByText(option);
-        clickElementByXpath(paymentOptionLocator(option));
+        clickElementByXpath(paymentOptionLocator(option), purchasePageLogger, "User clicks on payment option button");
     }
 
     /**
@@ -78,8 +74,9 @@ public class PurchasePage extends Base {
      * @param bank - Bank to be used for netbanking
      */
     public void selectNetBankingOption(String bank){
-        clickElementByXpath(chooseBankOptionLocator);
-        clickElementByXpath(selectBankForNetbanking(bank));
+        clickElementByXpath(chooseBankOptionLocator, purchasePageLogger, "User clicks on bank option button");
+        clickElementByXpath(selectBankForNetbanking(bank), purchasePageLogger, "User clicks on netbanking option button");
+        Utils.passStep(purchasePageLogger, "User selects net banking option");
     }
 
     /**
@@ -88,7 +85,7 @@ public class PurchasePage extends Base {
      */
     public void selectUPI(String vpa_value){
         sendKeysToElementByXpath("", vpa_value);
-        clickElementByXpath(verifyButtonLocator);
+        clickElementByXpath(verifyButtonLocator, purchasePageLogger, "User enters vpa for UPI");
     }
 
     /**
@@ -110,7 +107,7 @@ public class PurchasePage extends Base {
             selectUPI(payment_method_detail);
 
         clickOnContinueButton();
-        Utils.infoLog(purchasePageLogger, "Selected payment option");
+        Utils.passStep(purchasePageLogger, "User proceeds after updating payment option");
 
     }
 

@@ -8,6 +8,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 
 import java.net.MalformedURLException;
@@ -40,22 +41,26 @@ public class Config {
     }
 
     /**
+     * Set test data and initialise the reports
+     */
+    @BeforeSuite(alwaysRun = true)
+    public void beforeSuite(){
+        setTestData();
+        initializeReports();
+    }
+
+    /**
      * Initialise the WebDriver session
      */
     @BeforeTest(alwaysRun = true)
     public void initialize(){
         try {
-            Utils.readEntirePropertyFile(working_directory + "/test_data/configuration.properties");
-            Utils.readExcelFileToMap(working_directory + "/test_data/TestData.xlsx");
-            Report.initializeExtentReport(working_directory + "/reports/report_"+ System.currentTimeMillis() +".html");
-
             if(driver==null)
                 driver = new AndroidDriver(new URL(Utils.getValueForParam("url_android")), androidCapabilities());
             Utils.infoLog(configLogger,"Driver Initialised!!");
         }
         catch(MalformedURLException e){
-            System.out.println("Url exception while defining the driver: \n");
-            e.printStackTrace();
+            Utils.infoLog(configLogger,"Url exception while defining the driver: "+ e.getMessage());
         }
     }
 
@@ -80,5 +85,15 @@ public class Config {
      */
     protected AppiumDriver getDriver() {
         return driver;
+    }
+
+
+    private void setTestData(){
+        Utils.readPropertyFileToMap(working_directory + "/test_data/configuration.properties");
+        Utils.readExcelFileToMap(working_directory + "/test_data/TestData.xlsx");
+    }
+
+    private void initializeReports(){
+        Report.initializeExtentReport(working_directory + "/reports/report_"+ System.currentTimeMillis() +".html");
     }
 }

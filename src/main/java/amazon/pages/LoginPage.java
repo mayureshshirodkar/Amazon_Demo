@@ -4,7 +4,6 @@ import amazon.base.Base;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.testng.Assert;
 import amazon.utilities.Utils;
 
 public class LoginPage extends Base {
@@ -25,9 +24,8 @@ public class LoginPage extends Base {
      * Click on already a customer button
      */
     public void clickOnAlreadyCustomer(){
-        clickElementByID(customerSignInButtonID);
-        assertIfTrue(emailTextBoxID, "Verify is user is navigated to Welcome screen");
-        Utils.infoLog(loginPageLogger,"User navigated to Welcome screen !!");
+        clickElementByID(customerSignInButtonID, loginPageLogger,"User click on Already Customer button");
+        assertIfTrue(emailTextBoxID, "Assert if user is navigated to Welcome screen");
     }
 
     /**
@@ -43,7 +41,7 @@ public class LoginPage extends Base {
      * Click on continue to next page
      */
     public void clickOnContinueButton(){
-        clickElementByXpath(continueButtonID);
+        clickElementByXpath(continueButtonID,loginPageLogger,"User click on Continue button");
     }
 
     /**
@@ -52,7 +50,7 @@ public class LoginPage extends Base {
      */
     public void enterLoginPassword(String password){
         sendKeysToElementByXpath(passwordButtonID, password);
-        Utils.infoLog(loginPageLogger, "User enters password");
+        Utils.passStep(loginPageLogger, "User enters password and submits credentials");
     }
 
 
@@ -60,9 +58,8 @@ public class LoginPage extends Base {
      * Click on Sign in button to Login to app
      */
     public void clickOnSignInButton(){
-        clickElementByXpath(submitSignInButtonID);
+        clickElementByXpath(submitSignInButtonID, loginPageLogger,"User click on Sign-in button");
         waitForElementToBeInvisible(By.xpath(submitSignInButtonID), 5);
-        Utils.infoLog(loginPageLogger, "User tried to sign in");
     }
 
     /**
@@ -71,7 +68,6 @@ public class LoginPage extends Base {
     public void enterUserName(String email){
         enterLoginEmailAddress(email);
         clickOnContinueButton();
-        Utils.infoLog(loginPageLogger,"User enters email address and continues to next page");
     }
 
 
@@ -79,8 +75,7 @@ public class LoginPage extends Base {
      * Assert to check if Login is successful
      */
     public void verifySuccessfulLogin(){
-        assertIfTrue(ProductPage.viewCartButtonLocator, "Verify user has logged in successfully");
-        Utils.infoLog(loginPageLogger,"Customer Logged in !!");
+        assertIfTrue(ProductPage.viewCartButtonLocator, "Assert if user has logged in successfully");
     }
 
 }

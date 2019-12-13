@@ -1,6 +1,9 @@
 package amazon.pages;
 
 import amazon.base.Base;
+import amazon.utilities.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import java.util.List;
 
@@ -14,11 +17,13 @@ public class SearchPage extends Base {
 
     private String searchResultXpath(String value){ return "//android.widget.TextView[@text='" + value + "']"; }
 
+    private static Logger searchPageLogger = LogManager.getLogger(SearchPage.class);
+
     /**
      * Tap on the search text box
      */
     public void clickOnSearchTextBox(){
-        clickElementByID(itemSearchTextBoxID);
+        clickElementByID(itemSearchTextBoxID, searchPageLogger, "User clicks on search text box");
     }
 
     /**
@@ -26,13 +31,14 @@ public class SearchPage extends Base {
      */
     public void enterTextInSearchTextBox(String value){
         sendKeysToElementByID(itemSearchTextBoxID, value);
+        Utils.passStep(searchPageLogger, "User enters search text in search text box");
     }
 
     /**
      * Enter text in search text box
      */
     public void selectFromSearchOption(String value){
-        clickElementByXpath(searchResultXpath(value));
+        clickElementByXpath(searchResultXpath(value), searchPageLogger, "User selects an option from the search");
     }
 
     /**
@@ -41,6 +47,7 @@ public class SearchPage extends Base {
     public void selectItemFromList(){
         List<WebElement> element = findElementsByID(searchItemsLocator);
         element.get(1).click();
+        Utils.passStep(searchPageLogger, "User selects an item from list of products");
     }
 
     /**

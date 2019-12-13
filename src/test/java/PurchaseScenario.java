@@ -3,6 +3,7 @@ import amazon.pages.*;
 import amazon.utilities.Report;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import amazon.utilities.Utils;
 
@@ -22,9 +23,7 @@ public class PurchaseScenario {
 
 
     @Test(description = "Existing customer logs in to the app - (False Scenario)")
-    public void AmazonIncorrectLogin(Method method_name){
-        test_name = method_name.getName();
-        Report.createExtentTest(test_name);
+    public void AmazonIncorrectLogin(){
         String user = Utils.getValue(test_name, "username");
         String password = Utils.getValue(test_name, "password");
 
@@ -36,9 +35,7 @@ public class PurchaseScenario {
     }
 
     @Test(description = "Existing customer logs in to the app")
-    public void AmazonCorrectLogin(Method method_name){
-        test_name = method_name.getName();
-        Report.createExtentTest(test_name);
+    public void AmazonCorrectLogin(){
         String user = Utils.getValue(test_name, "username");
         String password = Utils.getValue(test_name, "password");
 
@@ -51,8 +48,7 @@ public class PurchaseScenario {
     }
 
     @Test(description = "Customer selects a product after search")
-    public void AmazonSearchItem(Method method_name) {
-        test_name = method_name.getName();
+    public void AmazonSearchItem() {
         String search_item = Utils.getValue(test_name, "search item");
 
         home.acceptLanguagePopup();
@@ -65,6 +61,7 @@ public class PurchaseScenario {
 
     @Test(description = "Customer adds product to cart")
     public void AmazonProductDetails() {
+
         product.clickOnAddToCart();
         product.clickToViewCart();
         product.verifyCartDetails(searchProductTitle, searchProductPrice);
@@ -73,8 +70,7 @@ public class PurchaseScenario {
 
 
     @Test(description = "Customer purchases the product")
-    public void AmazonProceedToCheckOut(Method method_name) {
-        test_name = method_name.getName();
+    public void AmazonProceedToCheckOut() {
         String payment_details = Utils.getValue(test_name, "payment mode");
 
         purchase.clickUseThisAddress();
@@ -86,16 +82,22 @@ public class PurchaseScenario {
 
     @Test(description = "Customer clears the cart")
     public void AmazonDeleteProductsFromCart(){
+
         home.navigateToHome();
         home.deleteProductsAddedToCart();
     }
 
+
+    @BeforeMethod
+    public void beforeMethod(Method method_name){
+        test_name = method_name.getName();
+        Report.createExtentTest(test_name);
+    }
+
+
     @AfterMethod
-    public void takeScreenShotOnFailure(ITestResult testResult){
+    public void afterMethod(ITestResult testResult){
         Report.flushExtentTest();
-//        if (testResult.getStatus() == ITestResult.FAILURE) {
-//            base.takeScreenshot(testResult);
-//        }
     }
 
 }

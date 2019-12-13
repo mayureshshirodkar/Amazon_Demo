@@ -15,7 +15,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.ITestResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class Base extends Config {
         try {
             return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.visibilityOfElementLocated(by));
         } catch (Exception e) {
-            Utils.debugLog(baseLogger,"Error while waiting for visibility of element- \n" + e.getMessage());
+            Utils.debugLog(baseLogger,"Error while waiting for visibility of element- \n" + e.getMessage() + "\n");
         }
         return null;
     }
@@ -50,8 +49,7 @@ public class Base extends Config {
         try {
              return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.invisibilityOfElementLocated(by));
         } catch (Exception e) {
-            Utils.debugLog(baseLogger,"Error while waiting for invisibility of element- \n" + e.getMessage());
-            e.printStackTrace();
+            Utils.debugLog(baseLogger,"Error while waiting for invisibility of element- \n" + e.getMessage() + "\n");
         }
         return null;
     }
@@ -66,8 +64,7 @@ public class Base extends Config {
         try {
             return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
         } catch (Exception e) {
-            Utils.debugLog(baseLogger,"Error while waiting for presence of element- \n" + e.getMessage());
-            e.printStackTrace();
+            Utils.debugLog(baseLogger,"Error while waiting for presence of element- \n" + e.getMessage()+ "\n");
         }
         return null;
     }
@@ -113,7 +110,16 @@ public class Base extends Config {
      * Click on element located by ID
      * @param id id locator for element
      */
-    protected void clickElementByID(String id){ findElementByID(id).click(); }
+    protected void clickElementByID(String id, Logger log, String message){
+        try {
+            findElementByID(id).click();
+            Utils.passStep(log,message);
+        }
+        catch (Exception e){
+            Utils.failStep(log, message, takeScreenshot(), e.getMessage());
+        }
+
+    }
 
 
     /**
@@ -130,7 +136,12 @@ public class Base extends Config {
      * @param xpath xpath locator for element
      */
     protected void sendKeysToElementByXpath(String xpath, String value){
-        findElementByXpath(xpath).sendKeys(value);
+        try {
+            findElementByXpath(xpath).sendKeys(value);
+        }
+        catch (Exception e){
+            Utils.debugLog(baseLogger,"Error on sendkeys to element- "+ xpath + "\n" + e.getMessage()+ "\n");
+        }
     }
 
 
@@ -138,7 +149,29 @@ public class Base extends Config {
      * Click on element located by Xpath
      * @param xpath xpath locator for element
      */
-    protected void clickElementByXpath(String xpath){ findElementByXpath(xpath).click(); }
+    protected void clickElementByXpath(String xpath, Logger log, String message){
+        try{
+            findElementByXpath(xpath).click();
+            Utils.passStep(log,message);
+        }
+        catch (Exception e){
+            Utils.failStep(log, message, takeScreenshot(), e.getMessage());
+        }
+        }
+
+    protected void clickElementsByXpath(String xpath){
+    try {
+        List<WebElement> elements = findElementsByXpath(xpath);
+        for (WebElement element : elements) {
+            element.click();
+        }
+    }
+    catch (Exception e){
+        Utils.debugLog(baseLogger,"Error on clicking of element- \n" + e.getMessage()+ "\n");
+    }
+
+    }
+
 
     /**
      * Scroll to an element located by text
@@ -149,8 +182,7 @@ public class Base extends Config {
             getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\").instance(0));"));
         }
         catch(Exception e){
-            Utils.debugLog(baseLogger,"Error while scrolling to element- \n" + e.getMessage());
-            e.printStackTrace();
+            Utils.debugLog(baseLogger,"Error while scrolling to element- " + e.getMessage()+ "\n");
         }
     }
 
@@ -240,18 +272,18 @@ public class Base extends Config {
         try {
             File scrFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
 
-            path = System.getProperty("user.dir")+"/screenshots/"+System.currentTimeMillis()+".png";
+            path = System.getProperty("user.dir")+"/"+System.currentTimeMillis()+".jpg";
 
             FileUtils.copyFile(scrFile, new File(path));
 
         } catch (IOException io) {
-            Utils.debugLog(baseLogger,"Error Taking Screenshot - \n" + io.getMessage());
+            Utils.debugLog(baseLogger,"Error Taking Screenshot - " + io.getMessage());
         }
         return path;
     }
 
 
-    public void assertIfTrue(String xpath, String verify_msg) {
+    protected void assertIfTrue(String xpath, String verify_msg) {
 
         if(waitForVisibilityOfElement(By.xpath(xpath), 5) != null) {
             Report.logStatusPass(verify_msg);
@@ -262,5 +294,17 @@ public class Base extends Config {
             Assert.fail("Assertion Failed!");
             }
         }
+
+    protected void assertIfEqual(String actual, String expected, String verify_msg) {
+
+        if(actual.equalsIgnoreCase(expected)) {
+            Report.logStatusPass(verify_msg);
+        }
+        else{
+            String temp = takeScreenshot();
+            Report.logStatusFail(verify_msg, temp);
+            Assert.fail("Assertion Failed!");
+        }
+    }
 
 }

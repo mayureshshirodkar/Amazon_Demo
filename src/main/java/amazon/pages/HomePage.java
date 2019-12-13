@@ -5,10 +5,6 @@ import amazon.utilities.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
-
-import java.util.List;
 
 public class HomePage extends Base {
 
@@ -31,12 +27,11 @@ public class HomePage extends Base {
      */
     public void acceptLanguagePopup(){
         if(waitForVisibilityOfElement(By.xpath(languageRadioLocator), 15) != null) {
-            clickElementByXpath(languageRadioLocator);
-            clickElementByXpath(saveLanguageChangeLocator);
-            Utils.infoLog(homePageLogger, "Language Popup Accepted");
+            clickElementByXpath(languageRadioLocator, homePageLogger, "User clicks on language radio button");
+            clickElementByXpath(saveLanguageChangeLocator, homePageLogger, "User clicks on save language preference button");
         }
         else{
-            Utils.infoLog(homePageLogger, "No Language Popup Displayed");
+            Utils.passStep(homePageLogger, "No Language Popup Displayed to user");
         }
     }
 
@@ -44,8 +39,7 @@ public class HomePage extends Base {
      * Tap on home and Navigate to Home page
      */
     public void navigateToHome(){
-        clickElementByXpath(homeButtonLocator);
-        Utils.infoLog(homePageLogger, "Navigate to Home page");
+        clickElementByXpath(homeButtonLocator, homePageLogger, "User clicks on home button");
     }
 
 
@@ -56,13 +50,8 @@ public class HomePage extends Base {
         product_page.clickToViewCart();
         swipeInDirection("down");
         waitTimer(1);
-        List<WebElement> products = findElementsByXpath(deleteProductLocator);
-        for(WebElement product:products){
-            product.click();
-        }
-        Assert.assertTrue(waitForVisibilityOfElement(By.xpath(emptyCartMessageLocator), 10).isDisplayed(),
-                "Assertion Failed! Payment option not shown");
-        Utils.infoLog(homePageLogger, "Products removed from cart!!");
+        clickElementsByXpath(deleteProductLocator);
+        assertIfTrue(emptyCartMessageLocator, "Assert if user has removed all products from cart");
     }
 
 }
