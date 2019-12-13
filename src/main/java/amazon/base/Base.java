@@ -109,6 +109,8 @@ public class Base extends Config {
     /**
      * Click on element located by ID
      * @param id id locator for element
+     * @param log logger for the class
+     * @param message message to be written to report
      */
     protected void clickElementByID(String id, Logger log, String message){
         try {
@@ -118,29 +120,39 @@ public class Base extends Config {
         catch (Exception e){
             Utils.failStep(log, message, takeScreenshot(), e.getMessage());
         }
-
     }
 
 
     /**
      * Send keys to an element located by ID
      * @param id id locator for element
+     * @param log logger for the class
+     * @param message message to be written to report
      */
-    protected void sendKeysToElementByID(String id, String value){
-        findElementByID(id).sendKeys(value);
+    protected void sendKeysToElementByID(String id, String value, Logger log, String message){
+        try {
+            findElementByID(id).sendKeys(value);
+            Utils.passStep(log, message);
+        }
+        catch (Exception e){
+            Utils.failStep(log, message, takeScreenshot(), e.getMessage());
+        }
     }
 
 
     /**
      * Send keys to an element located by XPATH
      * @param xpath xpath locator for element
+     * @param log logger for the class
+     * @param message message to be written to report
      */
-    protected void sendKeysToElementByXpath(String xpath, String value){
+    protected void sendKeysToElementByXpath(String xpath, String value, Logger log, String message){
         try {
             findElementByXpath(xpath).sendKeys(value);
+            Utils.passStep(log,message);
         }
         catch (Exception e){
-            Utils.debugLog(baseLogger,"Error on sendkeys to element- "+ xpath + "\n" + e.getMessage()+ "\n");
+            Utils.failStep(log, message, takeScreenshot(), e.getMessage());
         }
     }
 
@@ -148,6 +160,8 @@ public class Base extends Config {
     /**
      * Click on element located by Xpath
      * @param xpath xpath locator for element
+     * @param log logger for the class
+     * @param message message to be written to report
      */
     protected void clickElementByXpath(String xpath, Logger log, String message){
         try{
@@ -157,20 +171,46 @@ public class Base extends Config {
         catch (Exception e){
             Utils.failStep(log, message, takeScreenshot(), e.getMessage());
         }
-        }
-
-    protected void clickElementsByXpath(String xpath){
-    try {
-        List<WebElement> elements = findElementsByXpath(xpath);
-        for (WebElement element : elements) {
-            element.click();
-        }
-    }
-    catch (Exception e){
-        Utils.debugLog(baseLogger,"Error on clicking of element- \n" + e.getMessage()+ "\n");
     }
 
+
+    /**
+     * Click on elements from list located by Xpath
+     * @param xpath xpath locator for element
+     * @param log logger for the class
+     * @param message message to be written to report
+     */
+    protected void clickElementsByXpath(String xpath, Logger log, String message){
+        try {
+            List<WebElement> elements = findElementsByXpath(xpath);
+            for (WebElement element : elements) {
+                element.click();
+            }
+            Utils.passStep(log,message);
+        }
+        catch (Exception e){
+            Utils.failStep(log, message, takeScreenshot(), e.getMessage());
+        }
     }
+
+
+    /**
+     * Check if element is displayed
+     * @param xpath xpath locator for element
+     */
+    protected boolean isElementDisplayed(String xpath){
+        try {
+            WebElement element = waitForVisibilityOfElement(By.xpath(xpath), 15);
+
+            if(element !=null)
+                return element.isDisplayed();
+        }
+        catch (Exception e){
+            Utils.debugLog(baseLogger,"Error while waiting for visibility of element- \n" + e.getMessage() + "\n");
+        }
+        return false;
+    }
+
 
 
     /**
@@ -261,12 +301,17 @@ public class Base extends Config {
         getDriver().removeApp(bundle_id);
     }
 
+
     /**
      * Reset the state of the app
      */
     public void relaunchApp() { getDriver().resetApp(); }
 
 
+    /**
+     * Take Screenshot on error
+     * @return  temporary screenshot file path
+     */
     public String takeScreenshot() {
         String path = "";
         try {
@@ -283,9 +328,14 @@ public class Base extends Config {
     }
 
 
-    protected void assertIfTrue(String xpath, String verify_msg) {
+    /**
+     * Assertion if element is present
+     * @param  xpath xpath of element
+     * @param  verify_msg verification message
+     */
+    protected void assertIfElementPresent(String xpath, String verify_msg) {
 
-        if(waitForVisibilityOfElement(By.xpath(xpath), 5) != null) {
+        if(waitForVisibilityOfElement(By.xpath(xpath), 10) != null) {
             Report.logStatusPass(verify_msg);
         }
         else{
@@ -295,9 +345,33 @@ public class Base extends Config {
             }
         }
 
+    /**
+     * Assertion if element is actual and expected values are same
+     * @param  actual actual value
+     * @param  expected expected value to be verified
+     * @param  verify_msg verification message
+     */
     protected void assertIfEqual(String actual, String expected, String verify_msg) {
 
         if(actual.equalsIgnoreCase(expected)) {
+            Report.logStatusPass(verify_msg);
+        }
+        else{
+            String temp = takeScreenshot();
+            Report.logStatusFail(verify_msg, temp);
+            Assert.fail("Assertion Failed!");
+        }
+    }
+
+    /**
+     * Assertion if element is actual and expected values are same
+     * @param  actual actual value
+     * @param  expected expected value to be verified
+     * @param  verify_msg verification message
+     */
+    protected void assertIfTrue(Set<String> actual, String expected, String verify_msg) {
+
+        if(actual.contains(expected)) {
             Report.logStatusPass(verify_msg);
         }
         else{

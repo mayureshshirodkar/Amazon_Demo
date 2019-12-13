@@ -9,15 +9,16 @@ import java.util.List;
 
 public class SearchPage extends Base {
 
+    private static Logger searchPageLogger = LogManager.getLogger(SearchPage.class);
+
     private String itemSearchTextBoxID = "rs_search_src_text";
 
     private String searchItemsLocator = "item_title";
 
-    private String searchItemsPriceLocator = "//android.view.ViewGroup[contains(@resource-id,'rs_results_styled_price_v2')]/android.widget.TextView";
+    private String searchItemsPriceLocator = "//*[contains(@resource-id,'rs_results_styled_price_v2')]/android.widget.TextView";
 
     private String searchResultXpath(String value){ return "//android.widget.TextView[@text='" + value + "']"; }
 
-    private static Logger searchPageLogger = LogManager.getLogger(SearchPage.class);
 
     /**
      * Tap on the search text box
@@ -30,8 +31,7 @@ public class SearchPage extends Base {
      * Enter search text in search text box
      */
     public void enterTextInSearchTextBox(String value){
-        sendKeysToElementByID(itemSearchTextBoxID, value);
-        Utils.passStep(searchPageLogger, "User enters search text in search text box");
+        sendKeysToElementByID(itemSearchTextBoxID, value, searchPageLogger, "User enters text in search text box");
     }
 
     /**

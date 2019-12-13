@@ -4,11 +4,11 @@ import amazon.base.Base;
 import amazon.utilities.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 
 public class HomePage extends Base {
 
     private ProductPage product_page = new ProductPage();
+    private static Logger homePageLogger = LogManager.getLogger(HomePage.class);
 
     private String saveLanguageChangeLocator = "//*[@text='Save Changes']";
 
@@ -20,13 +20,12 @@ public class HomePage extends Base {
 
     private String emptyCartMessageLocator = "//*[contains(@text,'Your Shopping Cart is empty.')]";
 
-    private static Logger homePageLogger = LogManager.getLogger(HomePage.class);
 
     /**
      * Accept the app language selection popup
      */
     public void acceptLanguagePopup(){
-        if(waitForVisibilityOfElement(By.xpath(languageRadioLocator), 15) != null) {
+        if (isElementDisplayed(languageRadioLocator)) {
             clickElementByXpath(languageRadioLocator, homePageLogger, "User clicks on language radio button");
             clickElementByXpath(saveLanguageChangeLocator, homePageLogger, "User clicks on save language preference button");
         }
@@ -50,8 +49,8 @@ public class HomePage extends Base {
         product_page.clickToViewCart();
         swipeInDirection("down");
         waitTimer(1);
-        clickElementsByXpath(deleteProductLocator);
-        assertIfTrue(emptyCartMessageLocator, "Assert if user has removed all products from cart");
+        clickElementsByXpath(deleteProductLocator, homePageLogger, "User clicks on delete products");
+        assertIfElementPresent(emptyCartMessageLocator, "Assert if user has removed all products from cart");
     }
 
 }

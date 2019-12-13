@@ -8,23 +8,23 @@ import org.apache.logging.log4j.Logger;
 
 public class PurchasePage extends Base {
 
+    private static Logger purchasePageLogger = LogManager.getLogger(PurchasePage.class);
+
     private String useThisAddressLocator = "//*[@resource-id='a-autoid-0-announce']";
 
-    private String preferedTimeSlotLocator = "//*[@text='11:30 - 1:00 PM']";
+    private String preferredTimeSlotLocator = "//*[@text='11:30 - 1:00 PM']";
 
     private String continueButtonLocator = "//*[@text='Continue']";
 
-    private String paymentOptionLocator(String option){ return "//android.view.View[@text='" + option + "']"; }
-
     private String chooseBankOptionLocator = "//*[starts-with(@resource-id,'pp-') and ends-with(@resource-id,'-96')]";
-
-    private String selectBankForNetbanking(String bank){ return "//android.view.View[@text='"+ bank +"']"; }
 
     private String verifyButtonLocator = "//*[@text='Verify']";
 
     private String placeYourOrderLocator = "//*[@text='Place Your Order and Pay']";
 
-    private static Logger purchasePageLogger = LogManager.getLogger(PurchasePage.class);
+    private String paymentOptionLocator(String option){ return "//android.view.View[@text='" + option + "']"; }
+
+    private String selectBankForNetbanking(String bank){ return "//android.view.View[@text='"+ bank +"']"; }
 
 
     /**
@@ -40,7 +40,7 @@ public class PurchasePage extends Base {
      * Assert the user is on Place order and pay page
      */
     public void verifyUserOnPlaceOrder(){
-        assertIfTrue(placeYourOrderLocator, "Assert if user is on place order page");
+        assertIfElementPresent(placeYourOrderLocator, "Assert if user is on place order page");
     }
 
     /**
@@ -56,9 +56,8 @@ public class PurchasePage extends Base {
      */
     public void selectPreferedTimeSlot(){
         clickOnContinueButton();
-        clickElementByXpath(preferedTimeSlotLocator, purchasePageLogger, "User clicks on prefered time button");
+        clickElementByXpath(preferredTimeSlotLocator, purchasePageLogger, "User clicks on prefered time button");
         clickOnContinueButton();
-        Utils.passStep(purchasePageLogger, "User selects prefered time slot");
     }
 
     /**
@@ -76,7 +75,6 @@ public class PurchasePage extends Base {
     public void selectNetBankingOption(String bank){
         clickElementByXpath(chooseBankOptionLocator, purchasePageLogger, "User clicks on bank option button");
         clickElementByXpath(selectBankForNetbanking(bank), purchasePageLogger, "User clicks on netbanking option button");
-        Utils.passStep(purchasePageLogger, "User selects net banking option");
     }
 
     /**
@@ -84,8 +82,8 @@ public class PurchasePage extends Base {
      * @param vpa_value - VPA to be used for UPI
      */
     public void selectUPI(String vpa_value){
-        sendKeysToElementByXpath("", vpa_value);
-        clickElementByXpath(verifyButtonLocator, purchasePageLogger, "User enters vpa for UPI");
+        sendKeysToElementByXpath("", vpa_value, purchasePageLogger, "User enters VPA value ");
+        clickElementByXpath(verifyButtonLocator, purchasePageLogger, "User clicks on verify UPI");
     }
 
     /**
