@@ -16,7 +16,9 @@ Also the appium driver initialization methods are added in configs.
 
 Other packages in the framework:
 ```
-Utilities - Consists of methods to extract test data from properties file.
+Utilities - Consists of methods to extract test data from properties file/ Excel.
+
+Reports - Contains the Report generating methods
 
 App - Contains the application under test
 ```
