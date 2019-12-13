@@ -12,7 +12,7 @@ public class PurchasePage extends Base {
 
     private String useThisAddressLocator = "//*[@resource-id='a-autoid-0-announce']";
 
-    private String preferredTimeSlotLocator = "//*[@text='11:30 - 1:00 PM']";
+    private String preferredTimeSlotLocator = "//*[@text='3:00 - 4:30 PM']";
 
     private String continueButtonLocator = "//*[@text='Continue']";
 

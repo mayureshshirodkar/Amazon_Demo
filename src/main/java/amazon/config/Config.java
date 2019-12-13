@@ -88,11 +88,18 @@ public class Config {
     }
 
 
+    /**
+     * Set the Test data as well as the configuration file
+     */
     private void setTestData(){
         Utils.readPropertyFileToMap(working_directory + "/test_data/configuration.properties");
         Utils.readExcelFileToMap(working_directory + "/test_data/TestData.xlsx");
     }
 
+
+    /**
+     * Initialize the Extent reports
+     */
     private void initializeReports(){
         Report.initializeExtentReport(working_directory + "/reports/report_"+ System.currentTimeMillis() +".html");
     }

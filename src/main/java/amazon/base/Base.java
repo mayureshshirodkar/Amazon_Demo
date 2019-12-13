@@ -7,6 +7,7 @@ import amazon.utilities.Utils;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +19,7 @@ import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.*;
 
 public class Base extends Config {
@@ -34,7 +36,7 @@ public class Base extends Config {
         try {
             return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.visibilityOfElementLocated(by));
         } catch (Exception e) {
-            Utils.debugLog(baseLogger,"Error while waiting for visibility of element- \n" + e.getMessage() + "\n");
+            Utils.debugLog(baseLogger,"\nError while waiting for visibility of element- \n" + e.getMessage() + "\n");
         }
         return null;
     }
@@ -49,7 +51,7 @@ public class Base extends Config {
         try {
              return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.invisibilityOfElementLocated(by));
         } catch (Exception e) {
-            Utils.debugLog(baseLogger,"Error while waiting for invisibility of element- \n" + e.getMessage() + "\n");
+            Utils.debugLog(baseLogger,"\nError while waiting for invisibility of element- \n" + e.getMessage() + "\n");
         }
         return null;
     }
@@ -64,7 +66,7 @@ public class Base extends Config {
         try {
             return new WebDriverWait(getDriver(), waitTime).until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
         } catch (Exception e) {
-            Utils.debugLog(baseLogger,"Error while waiting for presence of element- \n" + e.getMessage()+ "\n");
+            Utils.debugLog(baseLogger,"\nError while waiting for presence of element- \n" + e.getMessage()+ "\n");
         }
         return null;
     }
@@ -75,7 +77,7 @@ public class Base extends Config {
      * @param xpath xpath locator for element
      */
     protected WebElement findElementByXpath(String xpath){
-        return waitForVisibilityOfElement(By.xpath(xpath), 15);
+        return waitForVisibilityOfElement(By.xpath(xpath), 10);
     }
 
 
@@ -84,7 +86,7 @@ public class Base extends Config {
      * @param xpath xpath locator for element
      */
     protected List<WebElement> findElementsByXpath(String xpath){
-        return waitForPresenceOfElements(By.xpath(xpath), 15);
+        return waitForPresenceOfElements(By.xpath(xpath), 10);
     }
 
 
@@ -206,7 +208,7 @@ public class Base extends Config {
                 return element.isDisplayed();
         }
         catch (Exception e){
-            Utils.debugLog(baseLogger,"Error while waiting for visibility of element- \n" + e.getMessage() + "\n");
+            Utils.debugLog(baseLogger,"\nError while waiting for visibility of element- \n" + e.getMessage() + "\n");
         }
         return false;
     }
@@ -222,9 +224,10 @@ public class Base extends Config {
             getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().textContains(\"" + text + "\").instance(0));"));
         }
         catch(Exception e){
-            Utils.debugLog(baseLogger,"Error while scrolling to element- " + e.getMessage()+ "\n");
+            Utils.debugLog(baseLogger,"\nError while scrolling to element- " + e.getMessage()+ "\n");
         }
     }
+
 
     /**
      *  Wait for application to pause for the time
@@ -235,9 +238,10 @@ public class Base extends Config {
             Thread.sleep(time*1000);
         }
         catch (InterruptedException e){
-            e.printStackTrace();
+            Utils.debugLog(baseLogger,"\nError during wait- " + e.getMessage()+ "\n");
         }
     }
+
 
     /**
      * Scroll to an element located by ResourceID
@@ -247,6 +251,7 @@ public class Base extends Config {
         getDriver().findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(new UiSelector().resourceIdMatches(\"" + resource_id + "\"));"));
     }
 
+
     /**
      * Fling to top of the scrollable page using UIAutomator
      */
@@ -254,12 +259,14 @@ public class Base extends Config {
         ((AndroidDriver) getDriver()).findElementByAndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).flingBackward();");
     }
 
+
     /**
      * Fling to bottom of the scrollable page using UIAutomator
      */
     protected void scrollBottom(){
         ((AndroidDriver) getDriver()).findElementByAndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).flingForward();");
     }
+
 
     /**
      * Swipe up/down the scrollable area
@@ -273,7 +280,7 @@ public class Base extends Config {
         int endY;
         if(direction.equalsIgnoreCase("down")) {
              startX = size.getWidth() / 2;
-             startY = (int) (size.getHeight () * 0.75);
+             startY = (int) (size.getHeight () * 0.8);
              endX = size.getWidth() / 2;
              endY = (int) (size.getHeight() * 0.2);
         }
@@ -287,7 +294,7 @@ public class Base extends Config {
 
         TouchAction action = new TouchAction (getDriver());
         action.press (PointOption.point(startX, startY))
-                .moveTo (PointOption.point(endX, endY))
+                .moveTo (PointOption.point(endX, endY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(200)))
                 .release ()
                 .perform ();
     }
@@ -322,7 +329,7 @@ public class Base extends Config {
             FileUtils.copyFile(scrFile, new File(path));
 
         } catch (IOException io) {
-            Utils.debugLog(baseLogger,"Error Taking Screenshot - " + io.getMessage());
+            Utils.debugLog(baseLogger,"\nError Taking Screenshot - " + io.getMessage());
         }
         return path;
     }
@@ -345,6 +352,7 @@ public class Base extends Config {
             }
         }
 
+
     /**
      * Assertion if element is actual and expected values are same
      * @param  actual actual value
@@ -362,6 +370,7 @@ public class Base extends Config {
             Assert.fail("Assertion Failed!");
         }
     }
+
 
     /**
      * Assertion if element is actual and expected values are same

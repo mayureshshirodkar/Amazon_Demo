@@ -57,7 +57,7 @@ public class LoginPage extends Base {
      */
     public void clickOnSignInButton(){
         clickElementByXpath(submitSignInButtonID, loginPageLogger,"User click on Sign-in button");
-        waitForElementToBeInvisible(By.xpath(submitSignInButtonID), 5);
+        waitTimer(5);
     }
 
     /**

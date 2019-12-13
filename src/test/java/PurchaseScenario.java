@@ -92,6 +92,7 @@ public class PurchaseScenario {
     public void beforeMethod(Method method_name){
         test_name = method_name.getName();
         Report.createExtentTest(test_name);
+
     }
 
 

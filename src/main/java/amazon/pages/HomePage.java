@@ -16,7 +16,7 @@ public class HomePage extends Base {
 
     private String homeButtonLocator = "//*[@content-desc='Home']";
 
-    private String deleteProductLocator = "//*[@text='Delete']";
+    private String deleteProductLocator = "//android.widget.Button[@text='Delete']";
 
     private String emptyCartMessageLocator = "//*[contains(@text,'Your Shopping Cart is empty.')]";
 

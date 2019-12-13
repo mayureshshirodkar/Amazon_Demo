@@ -1,6 +1,5 @@
 package amazon.utilities;
 
-import amazon.base.Base;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -155,7 +154,14 @@ public class Utils{
     }
 
 
-
+    /**
+     * Will read each cell and convert it to string
+     *
+     * @param sheetIndex - sheet number in excel
+     * @param row - row number in excel
+     * @param column - column number in excel
+     * @return  returns the string value of the cell
+     */
     public static String getData(int sheetIndex, int row, int column){
         sheet = wb.getSheetAt(sheetIndex);
         Cell c = sheet.getRow(row).getCell(column);
@@ -164,6 +170,12 @@ public class Utils{
     }
 
 
+    /**
+     * Will give the row count
+     *
+     * @param sheetIndex - sheet number in excel
+     * @return  returns the number of rows in excel
+     */
     public static int getRowCount(int sheetIndex){
         int row = wb.getSheetAt(sheetIndex).getLastRowNum();
 
@@ -172,27 +184,47 @@ public class Utils{
         return row;
     }
 
+
+    /**
+     * Prints the information log to log file
+     * @param message - message to be printed
+     * @param log - logger for the class
+     */
     public static void infoLog(Logger log, String message){
         log.info(message);
     }
 
+
+    /**
+     * Prints the debug log to log file
+     * @param message - message to be printed
+     * @param log - logger for the class
+     */
     public static void debugLog(Logger log, String message){
         log.debug(message);
     }
 
+
+    /**
+     * Adds logs to logfile as well as add passed steps to report file
+     * @param message - message to be printed
+     * @param log - logger for the class
+     */
     public static void passStep(Logger log, String message){
         infoLog(log, message);
         Report.logStatusPass(message);
     }
 
+
+    /**
+     * Adds logs to logfile as well as add failed steps to report file
+     * @param message - message to be printed
+     * @param log - logger for the class
+     */
     public static void failStep(Logger log, String message, String temp, String error_message){
         debugLog(log, error_message);
-        Report.logStatusFail(message, temp);
+        Report.logStatusFail(message +" - " + error_message, temp);
     }
-
-
-
-
 
 
 }
