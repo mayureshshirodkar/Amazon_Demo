@@ -88,7 +88,7 @@ public class PurchaseScenario {
     }
 
 
-    @BeforeMethod
+    @BeforeMethod(description = "Provide method names to the test cases and create extent tests")
     public void beforeMethod(Method method_name){
         test_name = method_name.getName();
         Report.createExtentTest(test_name);
@@ -96,7 +96,7 @@ public class PurchaseScenario {
     }
 
 
-    @AfterMethod
+    @AfterMethod(description = "Flush the results to Extent reports")
     public void afterMethod(ITestResult testResult){
         Report.flushExtentTest();
     }
