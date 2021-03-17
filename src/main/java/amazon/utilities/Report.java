@@ -14,7 +14,6 @@ import java.io.IOException;
 public class Report {
 
     private static Logger reportLogger = LogManager.getLogger(Report.class);
-
     private static ExtentReports extentReports;
     private static ExtentHtmlReporter extentHtmlReporter;
     private static ExtentTest extentTest;

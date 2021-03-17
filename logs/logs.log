@@ -1,4 +1,0 @@
-[INFO ] 2020-01-06 12:09:36.095 [main] Utils - Read /Users/mshirodkar/Desktop/Git/Amazon_Demo_Test/test_data/configuration.properties successfully
-[INFO ] 2020-01-06 12:09:36.710 [main] Report - Extent Reports Initialised!!
-[INFO ] 2020-01-06 12:09:36.761 [main] Config - Setting Android Desired Capabilities
-[INFO ] 2020-01-06 12:09:36.841 [main] Utils - Extracted Android version via bash command
